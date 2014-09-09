@@ -1,15 +1,72 @@
-<!-- The fileinput-button span is used to style the file input field as button -->
-<span class="btn btn-success fileinput-button">
-    <i class="glyphicon glyphicon-plus"></i>
-    <span>Add files...</span>
-    <!-- The file input field used as target for the file upload widget -->
-    <input id="fileupload" type="file" name="files[]" multiple>
-</span>
-<br>
-<br>
-<!-- The global progress bar -->
-<div id="progress" class="progress">
-    <div class="progress-bar progress-bar-success"></div>
+
+<div id="{{ __SELF__ }}Uploader">
+
+
+    <div class="rv-upload-dropzone" style="background: #f0f0f0; padding: 5px">
+        <!-- Add button -->
+        <button type="button" class="btn btn-success rv-upload-btn">
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>Add files...</span>
+        </button>
+
+        <!-- Hint -->
+        <span class="status ready">
+            Drag files here
+            {% if __SELF__.fileTypes != '*' %}
+                <small>Accepted types: {{ __SELF__.fileTypes|join(', ') }}</small> 
+            {% endif %}
+        </span>
+        <span class="status error">File upload failed</span>
+        <span class="status loading">Loading...</span>
+    </div>
+
+    <!-- The global progress bar -->
+    <div class="progress rv-upload-progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+
+    <!-- File upload input (hidden) -->
+    <input class="rv-upload-input" type="file" name="files[]" multiple />
+
+    <!-- The table listing the files available for upload/download -->
+    <table role="presentation" class="table table-striped rv-upload-files"></table>
+
+    {% verbatim %}
+        <script type="text/template" class="rv-upload-template">
+            <tr class="rv-file-template">
+                <td><span class="preview"></span></td>
+                <td>
+                    <h6 class="name">{{ file.name }}</h6>
+                    <p class="size">{{ file.sizeHuman }}</p>
+                    <p class="error"></p>
+                </td>
+                <td class="text-right">
+                    <button type="button" class="btn btn-warning btn-sm cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancel</span>
+                    </button>
+                </td>
+            </tr>
+        </script>
+
+        <script type="text/template" class="rv-download-template">
+            <tr class="rv-file-template">
+                <td><span class="preview"></span></td>
+                <td>
+                    <a href="{{ file.url }}">
+                        <h6 class="name">{{ file.name }}</h6>
+                        <p class="size">{{ file.sizeHuman }}</p>
+                    </a>
+                </td>
+                <td class="text-right">
+                    <button type="button" class="btn btn-warning btn-sm delete">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                </td>
+            </tr>
+        </script>
+    {% endverbatim %}
 </div>
-<!-- The container for the uploaded files -->
-<div id="files" class="files"></div>
+
+{% partial __SELF__ ~ '::script' %}

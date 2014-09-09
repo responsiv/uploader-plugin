@@ -1,0 +1,12 @@
+{% put scripts %}
+    <script>
+        $(document).ready(function(){ new $rvFileMulti('#{{ __SELF__ }}Uploader', {
+            autoUpload: true,
+            maxSize: 5,
+            fileTypes: '{{ __SELF__.fileTypes|join('|') }}',
+            previewWidth: 100,
+            previewHeight: 100,
+            handler: '{{ __SELF__ }}::onUpload'
+        }) })
+    </script>
+{% endput %}
