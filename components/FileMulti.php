@@ -2,7 +2,7 @@
 
 use Input;
 use Cms\Classes\ComponentBase;
-use Cms\Classes\CombineAssets;
+use System\Classes\CombineAssets;
 
 class FileMulti extends ComponentBase
 {
