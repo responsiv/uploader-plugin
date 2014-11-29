@@ -1,0 +1,12 @@
+{% set imageSize = 'width:'~(__SELF__.previewWidth + 42)~'px;height:'~(__SELF__.previewHeight + 42)~'px' %}
+
+<div
+    class="control-single-image-uploader {{ __SELF__.isPopulated() ? 'has-image' : '' }}"
+    data-update-partial="{{ __SELF__ ~ '::image' }}"
+    data-handler="{{ __SELF__ ~ '::onUpdateImage' }}"
+    data-control="single-image-uploader"
+    style="{{ imageSize }}">
+    <div class="content" style="{{ imageSize }}">
+        {% partial __SELF__ ~ '::image' image = __SELF__.getPopulated() %}
+    </div>
+</div>

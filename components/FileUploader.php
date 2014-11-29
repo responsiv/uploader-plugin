@@ -4,7 +4,7 @@ use Input;
 use Cms\Classes\ComponentBase;
 use System\Classes\CombineAssets;
 
-class FileMulti extends ComponentBase
+class FileUploader extends ComponentBase
 {
 
     /**
@@ -79,28 +79,7 @@ class FileMulti extends ComponentBase
 
     public function onRun()
     {
-        $assets = [
-            'assets/vendor/mustache/mustache.js',
-            'assets/js/vendor/jquery.ui.widget.js',
-            'assets/js/vendor/canvas-to-blob.js',
-            'assets/vendor/load-image/js/load-image.js',
-            'assets/vendor/load-image/js/load-image-ios.js',
-            'assets/vendor/load-image/js/load-image-orientation.js',
-            'assets/vendor/load-image/js/load-image-meta.js',
-            'assets/vendor/load-image/js/load-image-exif.js',
-            'assets/vendor/load-image/js/load-image-exif-map.js',
-            'assets/vendor/file-upload/js/jquery.iframe-transport.js',
-            'assets/vendor/file-upload/js/jquery.fileupload.js',
-            'assets/vendor/file-upload/js/jquery.fileupload-process.js',
-            'assets/vendor/file-upload/js/jquery.fileupload-image.js',
-            'assets/vendor/file-upload/js/jquery.fileupload-audio.js',
-            'assets/vendor/file-upload/js/jquery.fileupload-video.js',
-            'assets/vendor/file-upload/js/jquery.fileupload-validate.js',
-        ];
-
-        $assets[] = 'assets/js/filemulti.js';
-
-        $this->addJs(CombineAssets::combine($assets, $this->assetPath));
+        $this->addJs('assets/vendor/dropzone/dropzone.js');
     }
 
     public function onUpload()

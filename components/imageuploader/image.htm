@@ -1,0 +1,7 @@
+{% set imageSize = 'width:'~__SELF__.previewWidth~'px;height:'~__SELF__.previewHeight~'px' %}
+
+{% if image %}
+    <img src="{{ image.thumb(164, 164, {extension: 'png'}) }}" style="{{ imageSize }}"/>
+{% else %}
+    <p class="placeholder">{{ __SELF__.placeholderText }}</p>
+{% endif %}
