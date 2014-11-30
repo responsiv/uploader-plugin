@@ -29,11 +29,27 @@
             self.stop()
         })
         this.dropzone.on("sending", function(file, xhr, formData) {
+            self.addExtraFormData(formData)
             self.start()
         })
         this.dropzone.on("success", function(file, error){
             self.updateImage()
         })
+    }
+
+    SingleImageUploader.prototype.addExtraFormData = function(formData) {
+        if (this.options.extraData) {
+            $.each(this.options.extraData, function (name, value) {
+                formData.append(name, value)
+            })
+        }
+
+        var $form = this.$el.closest('form')
+        if ($form.length > 0) {
+            $.each($form.serializeArray(), function (index, field) {
+                formData.append(field.name, field.value)
+            })
+        }
     }
 
     SingleImageUploader.prototype.updateImage = function() {
@@ -86,7 +102,7 @@
 
     // ICON UPLOAD CONTROL DATA-API
     // ===============
-    $(document).ready(function(){
+    $(document).render(function(){
         $('[data-control=single-image-uploader]').singleImageUploader()
     })
 

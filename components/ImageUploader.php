@@ -58,6 +58,11 @@ class ImageUploader extends ComponentBase
                 'default'     => '100',
                 'type'        => 'string',
             ],
+            'deferredBinding' => [
+                'title'       => 'Use deferred binding',
+                'description' => 'If checked the associated model must be saved for the upload to be bound.',
+                'type'        => 'checkbox',
+            ],
         ];
     }
 
@@ -69,6 +74,11 @@ class ImageUploader extends ComponentBase
 
         $this->prepareVars();
         $this->checkUploadAction();
+    }
+
+    public function onRender()
+    {
+        $this->prepareVars();
     }
 
     protected function prepareVars()
@@ -100,6 +110,14 @@ class ImageUploader extends ComponentBase
 
     public function getPopulated()
     {
+        if ($sessionKey = $this->getSessionKey()) {
+            return $this->model
+                ->{$this->attribute}()
+                ->withDeferred($sessionKey)
+                ->orderBy('id', 'desc')
+                ->first();
+        }
+
         return $this->model->{$this->attribute};
     }
 
@@ -127,7 +145,14 @@ class ImageUploader extends ComponentBase
         $file->is_public = true;
         $file->save();
 
-        $this->model->{$this->attribute}()->add($file);
+        $this->model->{$this->attribute}()->add($file, $this->getSessionKey());
+    }
+
+    public function getSessionKey()
+    {
+        return !!$this->property('deferredBinding')
+            ? post('_session_key')
+            : null;
     }
 
 }
