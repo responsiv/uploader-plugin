@@ -5,7 +5,7 @@ div.control-multi-file-uploader.has-image {
   border-style: solid;
 }
 div.control-multi-file-uploader .content {
-  padding: 13px;
+  padding: 1rem;
 }
 div.control-multi-file-uploader .content p.placeholder {
   color: rgba(140, 140, 140, 0.8);
@@ -33,6 +33,7 @@ div.control-multi-file-uploader.dz-drag-hover {
   background: rgba(0, 0, 0, 0.04);
 }
 div.control-multi-file-uploader .dz-preview {
+  background: rgba(255, 255, 255, 0.5);
   position: relative;
   border-bottom: 1px solid rgba(39, 41, 43, 0.15);
   padding: .5rem 0;
@@ -40,9 +41,15 @@ div.control-multi-file-uploader .dz-preview {
 div.control-multi-file-uploader .dz-preview:last-of-type {
   border-bottom: none;
 }
+div.control-multi-file-uploader .dz-preview img.thumbnail {
+  float: left;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0 .5rem;
+}
 div.control-multi-file-uploader .dz-preview .dz-details {
-  min-height: 42px;
-  margin-left: 50px;
+  min-height: 2.6rem;
+  margin-left: 3.6rem;
 }
 div.control-multi-file-uploader .dz-preview .dz-details .dz-filename {
   font-weight: 700;
@@ -52,8 +59,8 @@ div.control-multi-file-uploader .dz-preview .dz-details .dz-size {
 }
 div.control-multi-file-uploader .dz-preview .dz-details .activity {
   margin-top: .5rem;
-  width: 42px;
-  height: 42px;
+  width: 2.6rem;
+  height: 2.6rem;
   position: absolute;
   right: 0;
   top: 0;
@@ -150,12 +157,6 @@ div.control-multi-file-uploader .dz-preview.dz-error .dz-error-message .dz-error
 div.control-multi-file-uploader .dz-preview.dz-error .loading {
   display: none;
 }
-div.control-multi-file-uploader .dz-preview img.thumbnail {
-  float: left;
-  width: 42px;
-  height: 42px;
-  margin-right: .5rem;
-}
 div.control-multi-file-uploader .dz-preview .action-panel {
   opacity: 0;
   position: absolute;
@@ -203,7 +204,7 @@ div.control-multi-image-uploader.has-image {
   border-style: solid;
 }
 div.control-multi-image-uploader .content {
-  padding: 13px;
+  padding: 1rem;
 }
 div.control-multi-image-uploader .content p.placeholder {
   color: rgba(140, 140, 140, 0.8);
@@ -433,7 +434,7 @@ div.control-single-image-uploader .loading {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.7);
+  /*background: rgba(255,255,255,.7);*/
   position: absolute;
   top: 50%;
   left: 50%;

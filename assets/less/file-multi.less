@@ -6,7 +6,7 @@ div.control-multi-file-uploader {
     }
 
     .content {
-        padding: 13px;
+        padding: 1rem;
 
         p.placeholder {
             color: rgba(140, 140, 140, 0.8);
@@ -26,6 +26,7 @@ div.control-multi-file-uploader {
     }
 
     .dz-preview {
+        background: rgba(255,255,255,.5);
         position: relative;
         border-bottom: 1px solid rgba(39, 41, 43, 0.15);
         padding: .5rem 0;
@@ -34,9 +35,16 @@ div.control-multi-file-uploader {
             border-bottom: none;
         }
 
+        img.thumbnail {
+            float: left;
+            width: 2.6rem;
+            height: 2.6rem;
+            margin: 0 .5rem;
+        }
+
         .dz-details {
-            min-height: 42px;
-            margin-left: 50px;
+            min-height: 2.6rem;
+            margin-left: 3.6rem;
 
             .dz-filename {
                 font-weight: 700;
@@ -48,8 +56,8 @@ div.control-multi-file-uploader {
 
             .activity {
                 margin-top: .5rem;
-                width: 42px;
-                height: 42px;
+                width: 2.6rem;
+                height: 2.6rem;
                 position: absolute;
                 right: 0;
                 top: 0;
@@ -122,14 +130,6 @@ div.control-multi-file-uploader {
             .loading {
                 display: none;
             }
-        }
-
-
-        img.thumbnail {
-            float: left;
-            width: 42px;
-            height: 42px;
-            margin-right: .5rem;
         }
 
         .action-panel {
