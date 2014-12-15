@@ -7,6 +7,11 @@ use System\Classes\CombineAssets;
 class FileUploader extends ComponentBase
 {
 
+    use \Responsiv\Uploader\Traits\ComponentUtils;
+
+    public $maxSize;
+    public $placeholderText;
+
     /**
      * Supported file types.
      * @var array
@@ -14,32 +19,31 @@ class FileUploader extends ComponentBase
     public $fileTypes;
 
     /**
-     * Unique API code for this component instance.
-     * @var string
+     * @var bool Has the model been bound.
      */
-    public $apiCode;
+    protected $isBound = false;
+
+    /**
+     * @var bool Is the related attribute a "many" type.
+     */
+    public $isMulti = false;
 
     public function componentDetails()
     {
         return [
-            'name'        => 'File (Multi)',
-            'description' => 'Upload multiple files'
+            'name'        => 'File Uploader',
+            'description' => 'Upload a file'
         ];
     }
 
     public function defineProperties()
     {
         return [
-            'apiCode' => [
-                'title'       => 'API Code',
-                'description' => 'A unique API code for this component so it can be referenced by others.',
-                'default'     => 'uploader',
+            'placeholderText' => [
+                'title'       => 'Placeholder text',
+                'description' => 'Wording to display when no file is uploaded',
+                'default'     => 'Click or drag files to upload',
                 'type'        => 'string',
-            ],
-            'autoUpload' => [
-                'title'       => 'Automatically upload files',
-                'description' => 'If checked, files will upload as soon as they are selected.',
-                'type'        => 'checkbox',
             ],
             'maxSize' => [
                 'title'       => 'Max file size (MB)',
@@ -53,33 +57,36 @@ class FileUploader extends ComponentBase
                 'default'     => '*',
                 'type'        => 'string',
             ],
-            'previewWidth' => [
-                'title'       => 'Image preview width',
-                'description' => 'Enter an amount in pixels, eg: 100',
-                'default'     => '100',
-                'type'        => 'string',
-            ],
-            'previewHeight' => [
-                'title'       => 'Image preview height',
-                'description' => 'Enter an amount in pixels, eg: 100',
-                'default'     => '100',
-                'type'        => 'string',
+            'deferredBinding' => [
+                'title'       => 'Use deferred binding',
+                'description' => 'If checked the associated model must be saved for the upload to be bound.',
+                'type'        => 'checkbox',
             ],
         ];
     }
 
     public function init()
     {
-        $this->fileTypes = $fileTypes = $this->property('fileTypes', '*');
-        if ($fileTypes != '*')
-            $this->fileTypes = array_map('trim', explode(',', $fileTypes));
-
-        $this->apiCode = $this->property('apiCode', 'uploader');
+        $this->fileTypes = $this->processFileTypes();
+        $this->maxSize = $this->property('maxSize');
+        $this->placeholderText = $this->property('placeholderText');
     }
 
     public function onRun()
     {
+        $this->addCss('assets/css/uploader.css');
         $this->addJs('assets/vendor/dropzone/dropzone.js');
+        $this->addJs('assets/js/file-multi.js');
+
+        if ($result = $this->checkUploadAction()) {
+            return $result;
+        }
+    }
+
+    public function onRender()
+    {
+        if (!$this->isBound)
+            throw new ApplicationException('There is no model bound to the uploader!');
     }
 
     public function onUpload()
@@ -87,6 +94,19 @@ class FileUploader extends ComponentBase
         $files = Input::file('files');
         $result = $this->controller->fireEvent('responsiv.uploader.sendFile', [$this, $files], true);
         return ['files' => $result];
+    }
+
+    public function onUpdateFile()
+    {
+        $file = $this->getPopulated();
+
+        if (($deleteId = post('id')) && post('mode') == 'delete') {
+            if ($deleteFile = $file->find($deleteId)) {
+                $deleteFile->delete();
+            }
+        }
+
+        $this->page['file'] = $file;
     }
 
 }

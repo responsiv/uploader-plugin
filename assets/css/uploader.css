@@ -1,11 +1,383 @@
+div.control-multi-file-uploader {
+  position: relative;
+}
+div.control-multi-file-uploader.has-image {
+  border-style: solid;
+}
+div.control-multi-file-uploader .content {
+  padding: 13px;
+}
+div.control-multi-file-uploader .content p.placeholder {
+  color: rgba(140, 140, 140, 0.8);
+}
+div.control-multi-file-uploader .clickable {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+  border: 1px dashed rgba(39, 41, 43, 0.15);
+  cursor: pointer;
+}
+div.control-multi-file-uploader .clickable:hover {
+  -webkit-transition: border 0.4s ease-out;
+  -moz-transition: border 0.4s ease-out;
+  -o-transition: border 0.4s ease-out;
+  -ms-transition: border 0.4s ease-out;
+  transition: border 0.4s ease-out;
+  border-color: #2581b8;
+}
+div.control-multi-file-uploader.dz-drag-hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+}
+div.control-multi-file-uploader .dz-preview {
+  position: relative;
+  border-bottom: 1px solid rgba(39, 41, 43, 0.15);
+  padding: .5rem 0;
+}
+div.control-multi-file-uploader .dz-preview:last-of-type {
+  border-bottom: none;
+}
+div.control-multi-file-uploader .dz-preview .dz-details {
+  min-height: 42px;
+  margin-left: 50px;
+}
+div.control-multi-file-uploader .dz-preview .dz-details .dz-filename {
+  font-weight: 700;
+}
+div.control-multi-file-uploader .dz-preview .dz-details .dz-size {
+  font-size: 12px;
+}
+div.control-multi-file-uploader .dz-preview .dz-details .activity {
+  margin-top: .5rem;
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+div.control-multi-file-uploader .dz-preview .dz-progress {
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: #d7d7d7;
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview .dz-progress .dz-upload {
+  display: block;
+  bottom: 0;
+  background-color: #8cc657;
+  -webkit-animation: loading 0.4s linear infinite;
+  -moz-animation: loading 0.4s linear infinite;
+  -o-animation: loading 0.4s linear infinite;
+  -ms-animation: loading 0.4s linear infinite;
+  animation: loading 0.4s linear infinite;
+  -webkit-transition: width 0.3s ease-out;
+  -moz-transition: width 0.3s ease-out;
+  -o-transition: width 0.3s ease-out;
+  -ms-transition: width 0.3s ease-out;
+  transition: width 0.3s ease-out;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #2581b8;
+}
+div.control-multi-file-uploader .dz-preview .dz-error-message {
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview.dz-processing .dz-details {
+  opacity: .8;
+}
+div.control-multi-file-uploader .dz-preview.dz-processing .dz-progress {
+  display: block;
+}
+div.control-multi-file-uploader .dz-preview.dz-processing .action-panel {
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview.dz-success .dz-details {
+  opacity: 1;
+}
+div.control-multi-file-uploader .dz-preview.dz-success .dz-progress {
+  display: block;
+  opacity: 0;
+  -webkit-transition: opacity 0.4s ease-out;
+  -moz-transition: opacity 0.4s ease-out;
+  -o-transition: opacity 0.4s ease-out;
+  -ms-transition: opacity 0.4s ease-out;
+  transition: opacity 0.4s ease-out;
+}
+div.control-multi-file-uploader .dz-preview.dz-success .loading {
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview.dz-success .action-panel {
+  display: block;
+}
+div.control-multi-file-uploader .dz-preview.dz-removing .dz-progress {
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview.dz-error .dz-progress .dz-upload {
+  background: #ee1e2d;
+}
+div.control-multi-file-uploader .dz-preview.dz-error .dz-error-message {
+  display: block;
+  line-height: 1;
+  color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: .5rem;
+  overflow: hidden;
+  background: rgba(238, 30, 45, 0.75);
+  padding-left: 46px;
+}
+div.control-multi-file-uploader .dz-preview.dz-error .dz-error-message .dz-error-mark {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: white;
+  line-height: 1.1;
+}
+div.control-multi-file-uploader .dz-preview.dz-error .loading {
+  display: none;
+}
+div.control-multi-file-uploader .dz-preview img.thumbnail {
+  float: left;
+  width: 42px;
+  height: 42px;
+  margin-right: .5rem;
+}
+div.control-multi-file-uploader .dz-preview .action-panel {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1.5rem;
+}
+div.control-multi-file-uploader .dz-preview .action-panel .delete {
+  opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  margin: -15px -15px 0 0;
+  font-size: 30px;
+  width: 30px;
+  line-height: 28.5px;
+  font-weight: 400;
+  vertical-align: top;
+  text-align: center;
+  color: black;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 999px;
+  display: block;
+  background: white;
+  text-decoration: none;
+}
+div.control-multi-file-uploader .dz-preview .action-panel .delete:hover,
+div.control-multi-file-uploader .dz-preview .action-panel .delete:focus {
+  cursor: pointer;
+  opacity: 1;
+}
+div.control-multi-file-uploader .dz-preview:hover .action-panel {
+  opacity: 1;
+  -webkit-transition: opacity 0.4s ease-out;
+  -moz-transition: opacity 0.4s ease-out;
+  -o-transition: opacity 0.4s ease-out;
+  -ms-transition: opacity 0.4s ease-out;
+  transition: opacity 0.4s ease-out;
+  z-index: 2;
+}
+div.control-multi-image-uploader {
+  position: relative;
+}
+div.control-multi-image-uploader.has-image {
+  border-style: solid;
+}
+div.control-multi-image-uploader .content {
+  padding: 13px;
+}
+div.control-multi-image-uploader .content p.placeholder {
+  color: rgba(140, 140, 140, 0.8);
+}
+div.control-multi-image-uploader .clickable {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+  border: 1px dashed rgba(39, 41, 43, 0.15);
+  cursor: pointer;
+}
+div.control-multi-image-uploader .clickable:hover {
+  -webkit-transition: border 0.4s ease-out;
+  -moz-transition: border 0.4s ease-out;
+  -o-transition: border 0.4s ease-out;
+  -ms-transition: border 0.4s ease-out;
+  transition: border 0.4s ease-out;
+  border-color: #2581b8;
+}
+div.control-multi-image-uploader.dz-drag-hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
+}
+div.control-multi-image-uploader .dz-preview {
+  background: rgba(255, 255, 255, 0.8);
+  position: relative;
+  display: inline-block;
+  margin: .5rem;
+  vertical-align: top;
+}
+div.control-multi-image-uploader .dz-preview,
+div.control-multi-image-uploader .dz-preview * {
+  box-sizing: border-box;
+}
+div.control-multi-image-uploader .dz-preview .dz-filename,
+div.control-multi-image-uploader .dz-preview .dz-size {
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview .dz-progress {
+  top: 100px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: #d7d7d7;
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview .dz-progress .dz-upload {
+  display: block;
+  bottom: 0;
+  background-color: #8cc657;
+  -webkit-animation: loading 0.4s linear infinite;
+  -moz-animation: loading 0.4s linear infinite;
+  -o-animation: loading 0.4s linear infinite;
+  -ms-animation: loading 0.4s linear infinite;
+  animation: loading 0.4s linear infinite;
+  -webkit-transition: width 0.3s ease-out;
+  -moz-transition: width 0.3s ease-out;
+  -o-transition: width 0.3s ease-out;
+  -ms-transition: width 0.3s ease-out;
+  transition: width 0.3s ease-out;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #2581b8;
+}
+div.control-multi-image-uploader .dz-preview .dz-error-message {
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview.dz-processing .dz-progress {
+  display: block;
+}
+div.control-multi-image-uploader .dz-preview.dz-success .dz-progress {
+  display: block;
+  opacity: 0;
+  -webkit-transition: opacity 0.4s ease-out;
+  -moz-transition: opacity 0.4s ease-out;
+  -o-transition: opacity 0.4s ease-out;
+  -ms-transition: opacity 0.4s ease-out;
+  transition: opacity 0.4s ease-out;
+}
+div.control-multi-image-uploader .dz-preview.dz-success .loading {
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview.dz-removing .dz-progress {
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview.dz-error .dz-progress .dz-upload {
+  background: #ee1e2d;
+}
+div.control-multi-image-uploader .dz-preview.dz-error .dz-error-message {
+  display: block;
+  line-height: 1;
+  color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: .5rem;
+  overflow: hidden;
+  background: rgba(238, 30, 45, 0.75);
+}
+div.control-multi-image-uploader .dz-preview.dz-error .dz-error-message .dz-error-mark {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: white;
+  line-height: 1.1;
+}
+div.control-multi-image-uploader .dz-preview.dz-error .loading {
+  display: none;
+}
+div.control-multi-image-uploader .dz-preview .action-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  z-index: 3;
+}
+div.control-multi-image-uploader .dz-preview:hover .action-panel {
+  opacity: 1;
+  -webkit-transition: opacity 0.4s ease-out;
+  -moz-transition: opacity 0.4s ease-out;
+  -o-transition: opacity 0.4s ease-out;
+  -ms-transition: opacity 0.4s ease-out;
+  transition: opacity 0.4s ease-out;
+}
+div.control-multi-image-uploader .dz-preview .delete {
+  opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  margin: -20px -20px 0 0;
+  font-size: 40px;
+  width: 40px;
+  line-height: 38px;
+  font-weight: 400;
+  vertical-align: top;
+  text-align: center;
+  color: black;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 999px;
+  display: block;
+  background: white;
+  text-decoration: none;
+}
+div.control-multi-image-uploader .dz-preview .delete:hover,
+div.control-multi-image-uploader .dz-preview .delete:focus {
+  cursor: pointer;
+  opacity: 1;
+}
 div.control-single-image-uploader {
   width: 106px;
   height: 106px;
   float: left;
   background: white;
-  border-radius: 2px;
-  border: 1px solid #ecf0f1;
+  border-radius: 3px;
+  border: 1px dashed rgba(39, 41, 43, 0.15);
   position: relative;
+}
+div.control-single-image-uploader.dz-drag-hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.04);
 }
 div.control-single-image-uploader .dz-preview {
   display: none;
@@ -30,8 +402,14 @@ div.control-single-image-uploader .content img {
   height: 64px;
   display: none;
 }
+div.control-single-image-uploader .content p.placeholder {
+  color: rgba(140, 140, 140, 0.8);
+}
 div.control-single-image-uploader[data-control="single-image-uploader"] img {
   display: inline-block;
+}
+div.control-single-image-uploader.has-image {
+  border-style: solid;
 }
 div.control-single-image-uploader.has-image .content {
   text-align: center;
@@ -44,8 +422,9 @@ div.control-single-image-uploader.has-image .content img {
   display: inline-block;
   float: none;
 }
+div.control-multi-file-uploader .loading,
+div.control-multi-image-uploader .loading,
 div.control-single-image-uploader .loading {
-  display: none;
   left: 0;
   top: 0;
   width: 100%;
@@ -65,6 +444,8 @@ div.control-single-image-uploader .loading {
   -ms-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
 }
+div.control-multi-file-uploader .loading:before,
+div.control-multi-image-uploader .loading:before,
 div.control-single-image-uploader .loading:before {
   position: absolute;
   content: '';
@@ -75,6 +456,8 @@ div.control-single-image-uploader .loading:before {
   border-radius: 500rem;
   border: 0.2em solid rgba(0, 0, 0, 0.15);
 }
+div.control-multi-file-uploader .loading:after,
+div.control-multi-image-uploader .loading:after,
 div.control-single-image-uploader .loading:after {
   position: absolute;
   content: '';
@@ -92,11 +475,18 @@ div.control-single-image-uploader .loading:after {
   border-width: 0.2em;
   box-shadow: 0px 0px 0px 1px transparent;
 }
+div.control-multi-file-uploader .loading:before,
+div.control-multi-image-uploader .loading:before,
 div.control-single-image-uploader .loading:before,
+div.control-multi-file-uploader .loading:after,
+div.control-multi-image-uploader .loading:after,
 div.control-single-image-uploader .loading:after {
   width: 2.2585em;
   height: 2.2585em;
   margin: -1.12925em 0em 0em -1.12925em;
+}
+div.control-single-image-uploader .loading {
+  display: none;
 }
 div.control-single-image-uploader.loading .loading {
   display: block;
@@ -122,3 +512,4 @@ div.control-single-image-uploader.loading .loading {
     transform: rotate(360deg);
   }
 }
+/*# sourceMappingURL=uploader.css.map */

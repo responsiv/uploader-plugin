@@ -1,21 +1,33 @@
 <?php namespace Responsiv\Uploader\Components;
 
-use Input;
-use Request;
-use Validator;
-use System\Models\File;
 use Cms\Classes\ComponentBase;
 use System\Classes\ApplicationException;
-use October\Rain\Support\ValidationException;
 
 class ImageUploader extends ComponentBase
 {
 
-    public $model;
-    public $attribute;
+    use \Responsiv\Uploader\Traits\ComponentUtils;
+
+    public $maxSize;
     public $previewWidth;
     public $previewHeight;
     public $placeholderText;
+
+    /**
+     * Supported file types.
+     * @var array
+     */
+    public $fileTypes;
+
+    /**
+     * @var bool Has the model been bound.
+     */
+    protected $isBound = false;
+
+    /**
+     * @var bool Is the related attribute a "many" type.
+     */
+    public $isMulti = false;
 
     public function componentDetails()
     {
@@ -31,7 +43,7 @@ class ImageUploader extends ComponentBase
             'placeholderText' => [
                 'title'       => 'Placeholder text',
                 'description' => 'Wording to display when no image is uploaded',
-                'default'     => 'Click to add image',
+                'default'     => 'Click or drag images to upload',
                 'type'        => 'string',
             ],
             'maxSize' => [
@@ -43,7 +55,7 @@ class ImageUploader extends ComponentBase
             'fileTypes' => [
                 'title'       => 'Supported file types',
                 'description' => 'File extensions separated by commas (,) or star (*) to allow all types.',
-                'default'     => '*',
+                'default'     => '.gif,.jpg,.jpeg,.png',
                 'type'        => 'string',
             ],
             'previewWidth' => [
@@ -66,93 +78,51 @@ class ImageUploader extends ComponentBase
         ];
     }
 
+    public function init()
+    {
+        $this->fileTypes = $this->processFileTypes();
+        $this->maxSize = $this->property('maxSize');
+        $this->previewWidth = $this->property('previewWidth');
+        $this->previewHeight = $this->property('previewHeight');
+        $this->placeholderText = $this->property('placeholderText');
+    }
+
     public function onRun()
     {
         $this->addCss('assets/css/uploader.css');
-        $this->addJs('assets/js/image-single.js');
         $this->addJs('assets/vendor/dropzone/dropzone.js');
 
-        $this->prepareVars();
-        $this->checkUploadAction();
+        if ($this->isMulti) {
+            $this->addJs('assets/js/image-multi.js');
+        }
+        else {
+            $this->addJs('assets/js/image-single.js');
+        }
+
+        if ($result = $this->checkUploadAction()) {
+            return $result;
+        }
     }
 
     public function onRender()
     {
-        $this->prepareVars();
-    }
-
-    protected function prepareVars()
-    {
-        $this->previewWidth = $this->page['previewWidth'] = $this->property('previewWidth');
-        $this->previewHeight = $this->page['previewHeight'] = $this->property('previewHeight');
-        $this->placeholderText = $this->page['placeholderText'] = $this->property('placeholderText');
+        if (!$this->isBound)
+            throw new ApplicationException('There is no model bound to the uploader!');
     }
 
     public function onUpdateImage()
     {
-        $this->prepareVars();
-        $this->page['image'] = $this->getPopulated();
-    }
+        $image = $this->getPopulated();
 
-    public function bindModel($attribute, $model)
-    {
-        if (is_callable($model))
-            $model = $model();
-
-        $this->model = $model;
-        $this->attribute = $attribute;
-    }
-
-    public function isPopulated()
-    {
-        return $this->getPopulated();
-    }
-
-    public function getPopulated()
-    {
-        if ($sessionKey = $this->getSessionKey()) {
-            return $this->model
-                ->{$this->attribute}()
-                ->withDeferred($sessionKey)
-                ->orderBy('id', 'desc')
-                ->first();
+        if (($deleteId = post('id')) && post('mode') == 'delete') {
+            if ($deleteImage = $image->find($deleteId)) {
+                $deleteImage->delete();
+            }
         }
 
-        return $this->model->{$this->attribute};
+        $this->page['image'] = $image;
     }
 
-    protected function checkUploadAction()
-    {
-        $uploadedFile = Input::file('file_data');
-        if (!Request::isMethod('POST') || !is_object($uploadedFile)) {
-            return;
-        }
 
-        $validationRules = ['mimes:png,jpg,jpeg'];
-        $validation = Validator::make(
-            ['file_data' => $uploadedFile],
-            ['file_data' => $validationRules]
-        );
-
-        if ($validation->fails())
-            throw new ValidationException($validation);
-
-        if (!$uploadedFile->isValid())
-            throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
-
-        $file = new File;
-        $file->data = $uploadedFile;
-        $file->is_public = true;
-        $file->save();
-
-        $this->model->{$this->attribute}()->add($file, $this->getSessionKey());
-    }
-
-    public function getSessionKey()
-    {
-        return !!$this->property('deferredBinding')
-            ? post('_session_key')
-            : null;
-    }
 
 }

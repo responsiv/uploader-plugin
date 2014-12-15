@@ -15,10 +15,14 @@
 
         this.$container.append('<div class="loading">')
 
+        var acceptedFiles = this.options.fileTypes
+        if (acceptedFiles == '*')
+            acceptedFiles = null
+
         this.dropzone = new Dropzone(this.$container.get(0), {
             url: window.location,
             clickable: this.$el.get(0),
-            acceptedFiles: this.options.extensions,
+            acceptedFiles: acceptedFiles,
             paramName: 'file_data'
         })
 
@@ -57,7 +61,8 @@
         updateList[this.options.updatePartial] = this.$el
 
         var request = this.$container.closest('form').request(this.options.handler, {
-               'update': updateList
+                update: updateList,
+                redirect: false
             }),
             self = this
 
@@ -76,7 +81,8 @@
 
     SingleImageUploader.DEFAULTS = {
         handler: 'onUpdateImage',
-        extensions: '.gif,.jpg,.jpeg,.png,.gif',
+        maxSize: null,
+        fileTypes: '.gif,.jpg,.jpeg,.png',
         updatePartial: 'uploader/image-single'
     }
 

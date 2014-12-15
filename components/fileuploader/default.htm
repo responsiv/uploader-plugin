@@ -1,72 +1,44 @@
 
-<div id="{{ __SELF__ }}Uploader">
+{% if __SELF__.isMulti %}
 
+    <div
+        class="control-multi-file-uploader {{ __SELF__.isPopulated() ? 'has-file' : '' }}"
+        data-handler="{{ __SELF__ ~ '::onUpdateFile' }}"
+        data-control="multi-file-uploader"
+        data-max-size="{{ __SELF__.maxSize }}"
+        data-file-types="{{ __SELF__.fileTypes|join(', ') }}">
 
-    <div class="rv-upload-dropzone" style="background: #f0f0f0; padding: 5px">
-        <!-- Add button -->
-        <button type="button" class="btn btn-success rv-upload-btn">
-            <i class="glyphicon glyphicon-plus"></i>
-            <span>Add files...</span>
-        </button>
+        <div class="clickable"></div>
+        <div class="content">
+            {% partial __SELF__ ~ '::file-multi' image = __SELF__.getPopulated() %}
+        </div>
 
-        <!-- Hint -->
-        <span class="status ready">
-            Drag files here
-            {% if __SELF__.fileTypes != '*' %}
-                <small>Accepted types: {{ __SELF__.fileTypes|join(', ') }}</small> 
-            {% endif %}
-        </span>
-        <span class="status error">File upload failed</span>
-        <span class="status loading">Loading...</span>
+        <div class="template" style="display: none">
+            <div class="dz-preview dz-file-preview">
+                <img class="thumbnail" src="http://placehold.it/42x42" data-dz-thumbnail />
+                <div class="dz-details">
+                    <div class="dz-filename"><span data-dz-name></span></div>
+                    <div class="dz-size" data-dz-size></div>
+                    <div class="activity">
+                        <div class="loading"></div>
+                    </div>
+                </div>
+                <div class="action-panel">
+                    <a href="javascript:;" class="delete">&times;</a>
+                </div>
+                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+
+                <div class="dz-error-message">
+                    <div class="dz-error-mark">&cross;</div>
+                    <span data-dz-errormessage></span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- The global progress bar -->
-    <div class="progress rv-upload-progress">
-        <div class="progress-bar progress-bar-success"></div>
-    </div>
+{% else %}
 
-    <!-- File upload input (hidden) -->
-    <input class="rv-upload-input" type="file" name="files[]" multiple />
+    <!-- @todo This section is incomplete -->
 
-    <!-- The table listing the files available for upload/download -->
-    <table role="presentation" class="table table-striped rv-upload-files"></table>
-
-    {% verbatim %}
-        <script type="text/template" class="rv-upload-template">
-            <tr class="rv-file-template">
-                <td><span class="preview"></span></td>
-                <td>
-                    <h6 class="name">{{ file.name }}</h6>
-                    <p class="size">{{ file.sizeHuman }}</p>
-                    <p class="error"></p>
-                </td>
-                <td class="text-right">
-                    <button type="button" class="btn btn-warning btn-sm cancel">
-                        <i class="glyphicon glyphicon-ban-circle"></i>
-                        <span>Cancel</span>
-                    </button>
-                </td>
-            </tr>
-        </script>
-
-        <script type="text/template" class="rv-download-template">
-            <tr class="rv-file-template">
-                <td><span class="preview"></span></td>
-                <td>
-                    <a href="{{ file.url }}">
-                        <h6 class="name">{{ file.name }}</h6>
-                        <p class="size">{{ file.sizeHuman }}</p>
-                    </a>
-                </td>
-                <td class="text-right">
-                    <button type="button" class="btn btn-warning btn-sm delete">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        <span>Delete</span>
-                    </button>
-                </td>
-            </tr>
-        </script>
-    {% endverbatim %}
-</div>
-
-{% partial __SELF__ ~ '::script' %}
+{% endif %}
