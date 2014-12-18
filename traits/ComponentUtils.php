@@ -21,9 +21,11 @@ trait ComponentUtils
         $this->model = $model;
         $this->attribute = $attribute;
 
-        $relationType = $this->model->getRelationType($attribute);
-        $this->isMulti = ($relationType == 'attachMany' || $relationType == 'morphMany');
-        $this->isBound = true;
+        if ($this->model) {
+            $relationType = $this->model->getRelationType($attribute);
+            $this->isMulti = ($relationType == 'attachMany' || $relationType == 'morphMany');
+            $this->isBound = true;
+        }
     }
 
     public function isPopulated()
