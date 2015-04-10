@@ -26,8 +26,8 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-           '\Responsiv\Uploader\Components\FileUploader'  => 'fileUploader',
-           '\Responsiv\Uploader\Components\ImageUploader' => 'imageUploader',
+           'Responsiv\Uploader\Components\FileUploader'  => 'fileUploader',
+           'Responsiv\Uploader\Components\ImageUploader' => 'imageUploader',
         ];
     }
 

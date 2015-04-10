@@ -1,7 +1,7 @@
 <?php namespace Responsiv\Uploader\Components;
 
+use ApplicationException;
 use Cms\Classes\ComponentBase;
-use System\Classes\ApplicationException;
 
 class ImageUploader extends ComponentBase
 {

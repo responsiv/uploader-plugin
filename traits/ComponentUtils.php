@@ -3,9 +3,9 @@
 use Input;
 use Request;
 use Validator;
+use ValidationException;
+use ApplicationException;
 use System\Models\File;
-use System\Classes\ApplicationException;
-use October\Rain\Support\ValidationException;
 
 trait ComponentUtils
 {
@@ -30,7 +30,12 @@ trait ComponentUtils
 
     public function isPopulated()
     {
-        return $this->getPopulated()->count() > 0;
+        if ($this->isMulti) {
+            return $this->getPopulated()->count() > 0;
+        }
+        else {
+            return !!$this->getPopulated();
+        }
     }
 
     public function getPopulated()
