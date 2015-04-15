@@ -12,6 +12,7 @@ trait ComponentUtils
 
     public $model;
     public $attribute;
+    protected $populated;
 
     public function bindModel($attribute, $model)
     {
@@ -40,6 +41,9 @@ trait ComponentUtils
 
     public function getPopulated()
     {
+        if ($this->populated !== null)
+            return $this->populated;
+
         /*
          * Use deferred bindings
          */

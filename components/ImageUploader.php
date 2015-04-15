@@ -11,6 +11,7 @@ class ImageUploader extends ComponentBase
     public $maxSize;
     public $previewWidth;
     public $previewHeight;
+    public $previewMode;
     public $placeholderText;
 
     /**
@@ -70,6 +71,12 @@ class ImageUploader extends ComponentBase
                 'default'     => '100',
                 'type'        => 'string',
             ],
+            'previewMode' => [
+                'title'       => 'Image preview mode',
+                'description' => 'Thumb mode for the preview, eg: exact, portrait, landscape, auto or crop',
+                'default'     => 'auto',
+                'type'        => 'string',
+            ],
             'deferredBinding' => [
                 'title'       => 'Use deferred binding',
                 'description' => 'If checked the associated model must be saved for the upload to be bound.',
@@ -84,6 +91,7 @@ class ImageUploader extends ComponentBase
         $this->maxSize = $this->property('maxSize');
         $this->previewWidth = $this->property('previewWidth');
         $this->previewHeight = $this->property('previewHeight');
+        $this->previewMode = $this->property('previewMode');
         $this->placeholderText = $this->property('placeholderText');
     }
 
@@ -104,10 +112,44 @@ class ImageUploader extends ComponentBase
         }
     }
 
+    public function getThumb($image = null)
+    {
+        if (!$image) {
+            $image = $this->getPopulated();
+        }
+
+        return $image->getThumb($this->previewWidth, $this->previewHeight, [
+            'extension' => 'png',
+            'mode' => $this->previewMode
+        ]);
+    }
+
+    public function getCssSize($addition = 0)
+    {
+        $width = $this->previewWidth == 'auto'
+            ? 'auto'
+            : ($this->previewWidth + $addition) . 'px;';
+
+        $height = $this->previewHeight == 'auto' 
+            ? 'auto'
+            : ($this->previewHeight + $addition) . 'px;';
+
+        $css = 'width: ' . $width . 'height: ' . $height;
+        return $css;
+    }
+
+    //
+    // AJAX
+    //
+
     public function onRender()
     {
         if (!$this->isBound)
             throw new ApplicationException('There is no model bound to the uploader!');
+
+        if ($populated = $this->property('populated')) {
+            $this->populated = $populated;
+        }
     }
 
     public function onUpdateImage()
@@ -122,7 +164,5 @@ class ImageUploader extends ComponentBase
 
         $this->page['image'] = $image;
     }
-
-
 
 }

@@ -37,8 +37,6 @@
 
 {% else %}
 
-    {% set imageSize = 'width:'~(__SELF__.previewWidth + 42)~'px;height:'~(__SELF__.previewHeight + 42)~'px' %}
-
     <div
         class="control-single-image-uploader {{ __SELF__.isPopulated() ? 'has-image' : '' }}"
         data-update-partial="{{ __SELF__ ~ '::image-single' }}"
@@ -46,8 +44,8 @@
         data-control="single-image-uploader"
         data-max-size="{{ __SELF__.maxSize }}"
         data-file-types="{{ __SELF__.fileTypes|join(', ') }}"
-        style="{{ imageSize }}">
-        <div class="content" style="{{ imageSize }}">
+        style="{{ __SELF__.getCssSize(42) }}">
+        <div class="content" style="{{ __SELF__.getCssSize(42) }}">
             {% partial __SELF__ ~ '::image-single' image = __SELF__.getPopulated() %}
         </div>
     </div>
