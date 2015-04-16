@@ -38,14 +38,14 @@
 {% else %}
 
     <div
-        class="control-single-image-uploader {{ __SELF__.isPopulated() ? 'has-image' : '' }}"
+        class="control-single-image-uploader {{ __SELF__.isPopulated() ? 'has-image' }} {{ __SELF__.previewFluid ? 'is-fluid' }}"
         data-update-partial="{{ __SELF__ ~ '::image-single' }}"
         data-handler="{{ __SELF__ ~ '::onUpdateImage' }}"
         data-control="single-image-uploader"
         data-max-size="{{ __SELF__.maxSize }}"
         data-file-types="{{ __SELF__.fileTypes|join(', ') }}"
-        style="{{ __SELF__.getCssSize(42) }}">
-        <div class="content" style="{{ __SELF__.getCssSize(42) }}">
+        style="{{ __SELF__.getCssSize(26) }}">
+        <div class="content" style="{{ __SELF__.getCssSize(26) }}">
             {% partial __SELF__ ~ '::image-single' image = __SELF__.getPopulated() %}
         </div>
     </div>

@@ -12,6 +12,7 @@ class ImageUploader extends ComponentBase
     public $previewWidth;
     public $previewHeight;
     public $previewMode;
+    public $previewFluid;
     public $placeholderText;
 
     /**
@@ -77,6 +78,12 @@ class ImageUploader extends ComponentBase
                 'default'     => 'auto',
                 'type'        => 'string',
             ],
+            'previewFluid' => [
+                'title'       => 'Fluid preview',
+                'description' => 'The image should expand to fit the size of its container',
+                'default'     => 0,
+                'type'        => 'checkbox',
+            ],
             'deferredBinding' => [
                 'title'       => 'Use deferred binding',
                 'description' => 'If checked the associated model must be saved for the upload to be bound.',
@@ -92,6 +99,7 @@ class ImageUploader extends ComponentBase
         $this->previewWidth = $this->property('previewWidth');
         $this->previewHeight = $this->property('previewHeight');
         $this->previewMode = $this->property('previewMode');
+        $this->previewFluid = $this->property('previewFluid');
         $this->placeholderText = $this->property('placeholderText');
     }
 
@@ -126,15 +134,21 @@ class ImageUploader extends ComponentBase
 
     public function getCssSize($addition = 0)
     {
-        $width = $this->previewWidth == 'auto'
-            ? 'auto'
-            : ($this->previewWidth + $addition) . 'px;';
+        $width = $this->previewWidth != 'auto'
+            ? ($this->previewWidth + $addition) . 'px;'
+            : null;
 
-        $height = $this->previewHeight == 'auto' 
-            ? 'auto'
-            : ($this->previewHeight + $addition) . 'px;';
+        $height = $this->previewHeight != 'auto'
+            ? ($this->previewHeight + $addition) . 'px;'
+            : null;
 
-        $css = 'width: ' . $width . 'height: ' . $height;
+        if ($this->previewFluid) {
+            $css = 'max-width: ' . ($width ?: 'none') . 'max-height: ' . ($height ?: 'none');
+        }
+        else {
+            $css = 'width: ' . ($width ?: 'auto') . 'height: ' . ($height ?: 'auto');
+        }
+
         return $css;
     }
 

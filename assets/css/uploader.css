@@ -374,6 +374,7 @@ div.control-single-image-uploader {
   border-radius: 3px;
   border: 1px dashed rgba(39, 41, 43, 0.15);
   position: relative;
+  display: inline-block;
 }
 div.control-single-image-uploader.dz-drag-hover {
   border-color: rgba(0, 0, 0, 0.15);
@@ -421,6 +422,23 @@ div.control-single-image-uploader.has-image .content p.placeholder {
 div.control-single-image-uploader.has-image .content img {
   display: inline-block;
   float: none;
+}
+div.control-single-image-uploader.is-fluid {
+  width: auto;
+  height: auto;
+}
+div.control-single-image-uploader.is-fluid .content {
+  display: block;
+  max-width: 106px;
+  max-height: 106px;
+  width: 100%;
+  height: 100%;
+}
+div.control-single-image-uploader.is-fluid .content img {
+  width: 100%;
+  height: 100%;
+  max-width: 64px;
+  max-height: 64px;
 }
 div.control-multi-file-uploader .loading,
 div.control-multi-image-uploader .loading,
