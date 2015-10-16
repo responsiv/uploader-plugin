@@ -1,2 +1,62 @@
+<div
+    class="responsiv-uploader-fileupload style-image-multi is-sortable is-multi {{ __SELF__.isPopulated() ? 'is-populated' }}"
+    data-control="fileupload"
+    data-template="#uploaderTemplate{{ __SELF__ }}"
+    data-unique-id="{{ __SELF__ }}"
+    {% if __SELF__.fileTypes %}data-file-types="{{ __SELF__.fileTypes }}"{% endif %}
+>
+    <!-- Upload Button -->
+    <button type="button" class="ui button btn btn-default oc-icon-upload upload-button">
+        {{ __SELF__.placeholderText }}
+    </button>
 
-<p class="placeholder">{{ __SELF__.placeholderText }}</p>
+    <!-- Existing files -->
+    <div class="upload-files-container">
+        {% for file in __SELF__.fileList %}
+            <div class="upload-object is-success" data-id="{{ file.id }}" data-path="{{ file.pathUrl }}">
+                <div class="icon-container image">
+                    <img src="{{ file.thumbUrl }}" alt="" />
+                </div>
+                <div class="info">
+                    <h4 class="filename">
+                        <span data-dz-name>{{ file.title ?: file.file_name }}</span>
+                        <a
+                            href="javascript:;"
+                            class="upload-remove-button"
+                            data-request="{{ __SELF__ ~ '::onRemoveAttachment' }}"
+                            data-request-confirm="Are you sure?"
+                            data-request-data="file_id: {{ file.id }}"
+                            >&times;</a>
+                    </h4>
+                    <p class="size">{{ file.sizeToString }}</p>
+                </div>
+                <div class="meta"></div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Template for new files -->
+<script type="text/template" id="uploaderTemplate{{ __SELF__ }}">
+    <div class="upload-object dz-preview dz-file-preview">
+        <div class="icon-container image">
+            <img data-dz-thumbnail />
+        </div>
+        <div class="info">
+            <h4 class="filename">
+                <span data-dz-name></span>
+                <a
+                    href="javascript:;"
+                    class="upload-remove-button"
+                    data-request="{{ __SELF__ ~ '::onRemoveAttachment' }}"
+                    data-request-confirm="Are you sure?"
+                    >&times;</a>
+            </h4>
+            <p class="size" data-dz-size></p>
+            <p class="error"><span data-dz-errormessage></span></p>
+        </div>
+        <div class="meta">
+            <div class="progress-bar"><span class="upload-progress" data-dz-uploadprogress></span></div>
+        </div>
+    </div>
+</script>

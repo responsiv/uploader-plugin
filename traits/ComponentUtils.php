@@ -2,17 +2,25 @@
 
 use Input;
 use Request;
+use Response;
 use Validator;
 use ValidationException;
 use ApplicationException;
 use System\Models\File;
+use October\Rain\Support\Collection;
 
 trait ComponentUtils
 {
 
+    /**
+     * @var Model
+     */
     public $model;
+
+    /**
+     * @var string
+     */
     public $attribute;
-    protected $populated;
 
     public function bindModel($attribute, $model)
     {
@@ -29,80 +37,113 @@ trait ComponentUtils
         }
     }
 
-    public function isPopulated()
+    public function setPopulated($model)
     {
         if ($this->isMulti) {
-            return $this->getPopulated()->count() > 0;
+            $this->fileList = $model;
+            $this->singleFile = $model->first();
         }
         else {
-            return !!$this->getPopulated();
+            $this->fileList = new Collection([$model]);
+            $this->singleFile = $model;
         }
     }
 
-    public function getPopulated()
+    public function isPopulated()
     {
-        if ($this->populated !== null)
-            return $this->populated;
+        if (!$this->fileList) {
+            return false;
+        }
 
+        return $this->fileList->count() > 0;
+    }
+
+    public function getFileList()
+    {
         /*
          * Use deferred bindings
          */
         if ($sessionKey = $this->getSessionKey()) {
-            $deferredQuery = $this->model
+            $list = $deferredQuery = $this->model
                 ->{$this->attribute}()
                 ->withDeferred($sessionKey)
-                ->orderBy('id', 'desc');
-
-            return $this->isMulti ? $deferredQuery->get() : $deferredQuery->first();
+                ->orderBy('id', 'desc')
+                ->get();
+        }
+        else {
+            $list = $this->model
+                ->{$this->attribute}()
+                ->orderBy('id', 'desc')
+                ->get();
         }
 
-        return $this->model->{$this->attribute};
+        if (!$list) {
+            $list = new Collection;
+        }
+
+        /*
+         * Decorate each file with thumb
+         */
+        $list->each(function($file) {
+            $this->decorateFileAttributes($file);
+        });
+
+        return $list;
     }
 
     protected function checkUploadAction()
     {
-        $uploadedFile = Input::file('file_data');
-        if (!Request::isMethod('POST') || !is_object($uploadedFile)) {
+        if (!($uniqueId = Request::header('X-OCTOBER-FILEUPLOAD')) || $uniqueId != $this->alias) {
             return;
         }
 
-        $validationRules = [];
-
-        /*
-         * Validate file types
-         */
-        if (count($this->fileTypes)) {
-            $mimes = trim(implode(',', (array) $this->fileTypes));
-            $mimes = str_replace('.', '', $mimes);
-
-            // ['mimes:png,jpg,jpeg'];
-            if ($mimes != '*') {
-                $validationRules[] = 'mimes:'.$mimes;
+        try {
+            if (!Input::hasFile('file_data')) {
+                throw new ApplicationException('File missing from request');
             }
+
+            $uploadedFile = Input::file('file_data');
+
+
+            $validationRules = ['max:'.File::getMaxFilesize()];
+            if ($fileTypes = $this->processFileTypes()) {
+                $validationRules[] = 'extensions:'.$fileTypes;
+            }
+
+            $validation = Validator::make(
+                ['file_data' => $uploadedFile],
+                ['file_data' => $validationRules]
+            );
+
+            if ($validation->fails()) {
+                throw new ValidationException($validation);
+            }
+
+            if (!$uploadedFile->isValid()) {
+                throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
+            }
+
+            $file = new File;
+            $file->data = $uploadedFile;
+            $file->is_public = true;
+            $file->save();
+
+            $this->model->{$this->attribute}()->add($file, $this->getSessionKey());
+
+            $file = $this->decorateFileAttributes($file);
+
+            $result = [
+                'id' => $file->id,
+                'thumb' => $file->thumbUrl,
+                'path' => $file->pathUrl
+            ];
+
+            return Response::json($result, 200);
+
         }
-
-        $validation = Validator::make(
-            ['file_data' => $uploadedFile],
-            ['file_data' => $validationRules]
-        );
-
-        if ($validation->fails())
-            throw new ValidationException($validation);
-
-        if (!$uploadedFile->isValid())
-            throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
-
-        $file = new File;
-        $file->data = $uploadedFile;
-        $file->is_public = true;
-        $file->save();
-
-        $this->model->{$this->attribute}()->add($file, $this->getSessionKey());
-
-        return [
-            'id' => $file->id,
-            'path' => $file->getPath()
-        ];
+        catch (Exception $ex) {
+            return Response::json($ex->getMessage(), 400);
+        }
     }
 
     public function getSessionKey()
@@ -112,27 +153,38 @@ trait ComponentUtils
             : null;
     }
 
-    protected function processFileTypes()
+    /**
+     * Returns the specified accepted file types, or the default
+     * based on the mode. Image mode will return:
+     * - jpg,jpeg,bmp,png,gif,svg
+     * @return string
+     */
+    protected function processFileTypes($includeDot = false)
     {
-        $fileTypes = $this->property('fileTypes', '*');
-        $result = [];
+        $types = $this->property('fileTypes', '*');
 
-        if ($fileTypes != '*') {
-            foreach (explode(',', $fileTypes) as $type) {
-                $type = trim($type);
+        if (!$types || $types == '*') {
+            return null;
+        }
 
-                if (substr($type, 0, 1) != '.') {
-                    $type = '.'.$type;
-                }
+        if (!is_array($types)) {
+            $types = explode(',', $types);
+        }
 
-                $result[] = $type;
+        $types = array_map(function($value) use ($includeDot) {
+            $value = trim($value);
+
+            if (substr($value, 0, 1) == '.') {
+                $value = substr($value, 1);
             }
-        }
-        else {
-            $result[] = '*';
-        }
 
-        return $result;
+            if ($includeDot) {
+                $value = '.'.$value;
+            }
+
+            return $value;
+        }, $types);
+
+        return implode(',', $types);
     }
-
 }

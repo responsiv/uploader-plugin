@@ -1,0 +1,322 @@
+.uploader-object-active() {
+    background: @uploader-object-active-bg !important;
+
+    i, p.size, p.error, .upload-remove-button {
+        color: #ecf0f1;
+    }
+
+    h4 {
+        color: white;
+    }
+
+    .icon-container {
+        border-right-color: @uploader-object-active-bg !important;
+    }
+
+    &.is-error {
+        background: @uploader-object-error-bg !important;
+    }
+}
+
+.uploader-progress-bar() {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    height: @uploader-progress-bar-height;
+    background-color: @uploader-progress-bar-bg;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+
+    .upload-progress {
+        float: left;
+        width: 0%;
+        height: 100%;
+        line-height: @uploader-progress-bar-height;
+        color: @uploader-progress-bar-color;
+        background-color: #5fb6f5;
+        box-shadow: none;
+        transition: width .6s ease;
+    }
+}
+
+.uploader-block-button() {
+    display: block;
+    float: left;
+    border: 2px dotted rgba(0,0,0,.1);
+    position: relative;
+    outline: none;
+
+    .upload-button-icon {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        top: 50%;
+        left: 50%;
+        margin-top: -11px;
+        margin-left: -11px;
+
+        &:before {
+            content: "+";
+            text-align: center;
+            display: block;
+            font-size: 22px;
+            height: 22px;
+            width: 22px;
+            line-height: 22px;
+            color: rgba(0,0,0,.1);
+            font-weight: 700;
+        }
+    }
+
+    &:hover {
+        border: 2px dotted rgba(0,0,0,.2);
+
+        .upload-button-icon:before {
+            color: #5cb85c;
+            color: rgba(0,0,0,.2);
+        }
+    }
+
+    &:focus {
+        border: 2px solid rgba(0,0,0,.3);
+        background: transparent;
+
+        .upload-button-icon:before {
+            color: #5cb85c;
+            color: rgba(0,0,0,.2);
+        }
+    }
+}
+
+.uploader-small-loader() {
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    background-size: 20px 20px;
+}
+
+.uploader-vertical-align() {
+    position: absolute;
+    top: 50%;
+    margin-top: -44px;
+    height: 88px;
+}
+
+//
+// Shared
+//
+
+.responsiv-uploader-fileupload {
+
+    //
+    // Uploaded item
+    //
+
+    .upload-object {
+
+        border-radius: 3px;
+        position: relative;
+        outline: none;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: top;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .icon-container {
+            display: table;
+            opacity: .6;
+
+            i {
+                color: #95a5a6;
+                display: inline-block;
+            }
+
+            div {
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+            }
+        }
+
+        .icon-container.image {
+            > div.icon-wrapper {
+                display: none;
+            }
+        }
+
+        h4 {
+            font-weight: 600;
+            font-size: 13px;
+            color: #2b3e50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 150%;
+            margin: 15px 0 5px 0;
+            padding-right: 0;
+            transition: padding 0.1s;
+
+            position: relative;
+
+            a {
+                position: absolute;
+                right: 0;
+                top: 0;
+                display: none;
+                font-weight: 400;
+            }
+        }
+
+        p.size, p.error {
+            font-size: 12px;
+            color: #95a5a6;
+            strong { font-weight: 400; }
+        }
+
+        p.error {
+            display: none;
+            color: #ab2a1c;
+        }
+
+        .meta {}
+
+        .info h4 a,
+        .meta a.upload-remove-button {
+            color: #2b3e50;
+            display: none;
+            font-size: 24px;
+            line-height: 16px;
+            text-decoration: none;
+        }
+
+    }
+
+    //
+    // Loading State
+    //
+
+    .upload-object {
+        .icon-container {
+            position: relative;
+        }
+
+        .icon-container:after {
+            background-image: url('../../../../../system/assets/ui/images/loader-transparent.svg');
+            position: absolute;
+            content: ' ';
+            width: 40px;
+            height: 40px;
+            left: 50%;
+            top: 50%;
+            margin-top: -20px;
+            margin-left: -20px;
+            display: block;
+            background-size: 40px 40px;
+            background-position: 50% 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        &.is-success {
+            .icon-container {
+                opacity: 1;
+            }
+            .icon-container:after {
+                opacity: 0;
+                transition: opacity .3s ease;
+            }
+        }
+
+        &.is-loading {
+            .icon-container {
+                opacity: .6;
+            }
+            .icon-container:after {
+                opacity: 1;
+                transition: opacity .3s ease;
+            }
+        }
+    }
+
+    //
+    // Success state
+    //
+
+    .upload-object.is-success {
+        cursor: pointer;
+
+        .progress-bar {
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        &:hover {
+            h4 a,
+            .meta .upload-remove-button { display: block; }
+        }
+    }
+
+    //
+    // Error State
+    //
+
+    .upload-object.is-error {
+        cursor: pointer;
+
+        .progress-bar {
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        .icon-container {
+            opacity: 1;
+            > img, > i {
+                opacity: .5;
+            }
+        }
+
+        .info h4 {
+            color: #ab2a1c;
+        }
+
+        p.error {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .info .upload-remove-button,
+        .meta .upload-remove-button {
+            display: block;
+        }
+    }
+
+    //
+    // Preview mode
+    //
+
+    &.is-preview {
+        .upload-button,
+        .upload-remove-button {
+            display: none !important;
+        }
+    }
+}
+
+//
+// Media
+//
+
+@media (max-width: 1024px) {
+    .responsiv-uploader-fileupload {
+        .upload-object.is-success {
+            h4 a,
+            .meta .upload-remove-button { display: block !important; }
+        }
+    }
+}

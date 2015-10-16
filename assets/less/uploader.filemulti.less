@@ -1,0 +1,163 @@
+//
+// Multi File
+//
+
+.responsiv-uploader-fileupload.style-file-multi {
+    .upload-button {
+        margin-bottom: 10px;
+    }
+
+    .upload-files-container {
+        border: 1px solid @uploader-list-border-color;
+        border-radius: 3px;
+        border-bottom: none;
+        display: none;
+    }
+
+    &.is-populated .upload-files-container {
+        display: block;
+    }
+
+    .upload-object {
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid @uploader-list-border-color;
+        padding-left: 10px;
+
+        &:nth-child(even) {
+            background-color: @uploader-list-accent-bg;
+        }
+
+        .icon-container {
+            position: absolute;
+            top: 0;
+            left: 5px;
+            width: 35px;
+            padding: 11px 7px;
+        }
+
+        .info {
+            margin-left: 35px;
+            margin-right: 15%;
+
+            h4, p {
+                margin: 0;
+                padding: 11px 0;
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 150%;
+                color: #666666;
+            }
+
+            h4 {
+                padding-right: 15px;
+
+                a {
+                    padding: 10px 0;
+                    right: 15px;
+                }
+            }
+
+            p.size {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 15%;
+                display: none;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            p.error {
+                color: #ab2a1c;
+                padding-top: 0;
+            }
+        }
+
+        .progress-bar {
+            .uploader-progress-bar();
+            position: absolute;
+            top: 18px;
+            left: 0;
+        }
+
+        .meta {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-right: 15px;
+            width: 15%;
+
+            .upload-remove-button {
+                position: absolute;
+                top: -9px;
+                right: 0;
+                bottom: auto;
+                line-height: 150%;
+                padding: 10px 0;
+                z-index: 100;
+            }
+        }
+
+        .icon-container:after {
+            .uploader-small-loader();
+        }
+
+        //
+        // Success
+        //
+
+        &.is-success {
+            .info p.size { display: block; }
+        }
+
+        //
+        // Hover
+        //
+
+        &:hover {
+            .uploader-object-active();
+            h4 { padding-right: 35px; }
+        }
+    }
+}
+
+//
+// Media
+//
+
+@media (max-width: @screen-md-max) {
+    .responsiv-uploader-fileupload.style-file-multi {
+        .info {
+            margin-right: 20% !important;
+            p.size {
+                width: 20% !important;
+            }
+        }
+
+        .meta {
+            width: 20% !important;
+        }
+    }
+}
+
+@media (max-width: @screen-sm-max) {
+    .responsiv-uploader-fileupload.style-file-multi {
+        .upload-object {
+            h4 { padding-right: 35px !important; }
+        }
+
+        .info {
+            margin-right: 25% !important;
+            p.size {
+                width: 25% !important;
+                padding-right: 35px !important;
+            }
+        }
+
+        .meta {
+            width: 25% !important;
+        }
+    }
+}

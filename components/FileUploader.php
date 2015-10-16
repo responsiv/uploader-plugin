@@ -2,7 +2,9 @@
 
 use Input;
 use Cms\Classes\ComponentBase;
+use System\Models\File;
 use System\Classes\CombineAssets;
+use ApplicationException;
 
 class FileUploader extends ComponentBase
 {
@@ -27,6 +29,16 @@ class FileUploader extends ComponentBase
      * @var bool Is the related attribute a "many" type.
      */
     public $isMulti = false;
+
+    /**
+     * @var Collection
+     */
+    public $fileList;
+
+    /**
+     * @var Model
+     */
+    public $singleFile;
 
     public function componentDetails()
     {
@@ -67,7 +79,7 @@ class FileUploader extends ComponentBase
 
     public function init()
     {
-        $this->fileTypes = $this->processFileTypes();
+        $this->fileTypes = $this->processFileTypes(true);
         $this->maxSize = $this->property('maxSize');
         $this->placeholderText = $this->property('placeholderText');
     }
@@ -76,37 +88,41 @@ class FileUploader extends ComponentBase
     {
         $this->addCss('assets/css/uploader.css');
         $this->addJs('assets/vendor/dropzone/dropzone.js');
-        $this->addJs('assets/js/file-multi.js');
+        $this->addJs('assets/js/uploader.js');
 
         if ($result = $this->checkUploadAction()) {
             return $result;
         }
+
+        $this->fileList = $fileList = $this->getFileList();
+        $this->singleFile = $fileList->first();
     }
 
     public function onRender()
     {
-        if (!$this->isBound)
+        if (!$this->isBound) {
             throw new ApplicationException('There is no model bound to the uploader!');
-    }
-
-    public function onUpload()
-    {
-        $files = Input::file('files');
-        $result = $this->controller->fireEvent('responsiv.uploader.sendFile', [$this, $files], true);
-        return ['files' => $result];
-    }
-
-    public function onUpdateFile()
-    {
-        $file = $this->getPopulated();
-
-        if (($deleteId = post('id')) && post('mode') == 'delete') {
-            if ($deleteFile = $file->find($deleteId)) {
-                $deleteFile->delete();
-            }
         }
+    }
 
-        $this->page['file'] = $file;
+    /**
+     * Adds the bespoke attributes used internally by this widget.
+     * - thumbUrl
+     * - pathUrl
+     * @return System\Models\File
+     */
+    protected function decorateFileAttributes($file)
+    {
+        $file->pathUrl = $file->thumbUrl = $file->getPath();
+
+        return $file;
+    }
+
+    public function onRemoveAttachment()
+    {
+        if (($file_id = post('file_id')) && ($file = File::find($file_id))) {
+            $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
+        }
     }
 
 }

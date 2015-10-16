@@ -1,8 +1,8 @@
 # Uploader Control
 
-Collection of File Upload components for October. There are two primary components provided by this plugin: image uploader and file uploader. The image upload is suitable for uploading photos with thumbnails, whereas the file uploader is suitable for any type of file.
+Collection of File Upload components for October. This is a port of the back-end `fileupload` form widget. There are two primary components provided by this plugin: image uploader and file uploader. The image upload is suitable for uploading photos with thumbnails, whereas the file uploader is suitable for any type of file.
 
-Each component will detect if the relationship is a multiple ("many") or singular ("one") type and render a different control accordingly. **Note a singular file upload is not supported at this stage.**
+Each component will detect if the relationship is a multiple ("many") or singular ("one") type and render a different control accordingly.
 
 #### Attaching the uploader
 

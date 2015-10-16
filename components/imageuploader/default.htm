@@ -1,54 +1,9 @@
 {% if __SELF__.isMulti %}
 
-    {% set imageSize = 'width:'~(__SELF__.previewWidth)~'px;height:'~(__SELF__.previewHeight)~'px' %}
-
-    <div
-        class="control-multi-image-uploader {{ __SELF__.isPopulated() ? 'has-image' : '' }}"
-        data-handler="{{ __SELF__ ~ '::onUpdateImage' }}"
-        data-control="multi-image-uploader"
-        data-max-size="{{ __SELF__.maxSize }}"
-        data-file-types="{{ __SELF__.fileTypes|join(', ') }}">
-        <div class="clickable"></div>
-        <div class="content">
-            {% partial __SELF__ ~ '::image-multi' image = __SELF__.getPopulated() %}
-        </div>
-
-        <div class="template" style="display: none">
-            <div class="dz-preview dz-file-preview" style="{{ imageSize }}">
-                <div class="action-panel">
-                    <a href="javascript:;" class="delete">&times;</a>
-                </div>
-                <div class="dz-details">
-                    <div class="dz-filename"><span data-dz-name></span></div>
-                    <div class="dz-size" data-dz-size></div>
-                    <img class="thumbnail" data-dz-thumbnail />
-                </div>
-                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-
-                <div class="dz-error-message">
-                    <div class="dz-error-mark">&cross;</div>
-                    <span data-dz-errormessage></span>
-                </div>
-                <div class="loading"></div>
-            </div>
-        </div>
-
-    </div>
+    {% partial __SELF__ ~ '::image-multi' %}
 
 {% else %}
 
-    <div
-        class="control-single-image-uploader {{ __SELF__.isPopulated() ? 'has-image' }} {{ __SELF__.previewFluid ? 'is-fluid' }}"
-        data-update-partial="{{ __SELF__ ~ '::image-single' }}"
-        data-handler="{{ __SELF__ ~ '::onUpdateImage' }}"
-        data-control="single-image-uploader"
-        data-max-size="{{ __SELF__.maxSize }}"
-        data-file-types="{{ __SELF__.fileTypes|join(', ') }}"
-        style="{{ __SELF__.getCssSize(26) }}">
-        <div class="content" style="{{ __SELF__.getCssSize(26) }}">
-            {% partial __SELF__ ~ '::image-single' image = __SELF__.getPopulated() %}
-        </div>
-    </div>
+    {% partial __SELF__ ~ '::image-single' %}
 
 {% endif %}
-

@@ -1,7 +1,8 @@
 <?php namespace Responsiv\Uploader\Components;
 
-use ApplicationException;
+use System\Models\File;
 use Cms\Classes\ComponentBase;
+use ApplicationException;
 
 class ImageUploader extends ComponentBase
 {
@@ -9,11 +10,19 @@ class ImageUploader extends ComponentBase
     use \Responsiv\Uploader\Traits\ComponentUtils;
 
     public $maxSize;
-    public $previewWidth;
-    public $previewHeight;
+    public $imageWidth;
+    public $imageHeight;
     public $previewMode;
     public $previewFluid;
     public $placeholderText;
+
+    /**
+     * @var array Options used for generating thumbnails.
+     */
+    public $thumbOptions = [
+        'mode'      => 'crop',
+        'extension' => 'auto'
+    ];
 
     /**
      * Supported file types.
@@ -30,6 +39,16 @@ class ImageUploader extends ComponentBase
      * @var bool Is the related attribute a "many" type.
      */
     public $isMulti = false;
+
+    /**
+     * @var Collection
+     */
+    public $fileList;
+
+    /**
+     * @var Model
+     */
+    public $singleFile;
 
     public function componentDetails()
     {
@@ -60,13 +79,13 @@ class ImageUploader extends ComponentBase
                 'default'     => '.gif,.jpg,.jpeg,.png',
                 'type'        => 'string',
             ],
-            'previewWidth' => [
+            'imageWidth' => [
                 'title'       => 'Image preview width',
                 'description' => 'Enter an amount in pixels, eg: 100',
                 'default'     => '100',
                 'type'        => 'string',
             ],
-            'previewHeight' => [
+            'imageHeight' => [
                 'title'       => 'Image preview height',
                 'description' => 'Enter an amount in pixels, eg: 100',
                 'default'     => '100',
@@ -75,15 +94,15 @@ class ImageUploader extends ComponentBase
             'previewMode' => [
                 'title'       => 'Image preview mode',
                 'description' => 'Thumb mode for the preview, eg: exact, portrait, landscape, auto or crop',
-                'default'     => 'auto',
+                'default'     => 'crop',
                 'type'        => 'string',
             ],
-            'previewFluid' => [
-                'title'       => 'Fluid preview',
-                'description' => 'The image should expand to fit the size of its container',
-                'default'     => 0,
-                'type'        => 'checkbox',
-            ],
+            // 'previewFluid' => [
+            //     'title'       => 'Fluid preview',
+            //     'description' => 'The image should expand to fit the size of its container',
+            //     'default'     => 0,
+            //     'type'        => 'checkbox',
+            // ],
             'deferredBinding' => [
                 'title'       => 'Use deferred binding',
                 'description' => 'If checked the associated model must be saved for the upload to be bound.',
@@ -94,10 +113,10 @@ class ImageUploader extends ComponentBase
 
     public function init()
     {
-        $this->fileTypes = $this->processFileTypes();
+        $this->fileTypes = $this->processFileTypes(true);
         $this->maxSize = $this->property('maxSize');
-        $this->previewWidth = $this->property('previewWidth');
-        $this->previewHeight = $this->property('previewHeight');
+        $this->imageWidth = $this->property('imageWidth');
+        $this->imageHeight = $this->property('imageHeight');
         $this->previewMode = $this->property('previewMode');
         $this->previewFluid = $this->property('previewFluid');
         $this->placeholderText = $this->property('placeholderText');
@@ -107,76 +126,96 @@ class ImageUploader extends ComponentBase
     {
         $this->addCss('assets/css/uploader.css');
         $this->addJs('assets/vendor/dropzone/dropzone.js');
-
-        if ($this->isMulti) {
-            $this->addJs('assets/js/image-multi.js');
-        }
-        else {
-            $this->addJs('assets/js/image-single.js');
-        }
+        $this->addJs('assets/js/uploader.js');
 
         if ($result = $this->checkUploadAction()) {
             return $result;
         }
+
+        $this->fileList = $fileList = $this->getFileList();
+        $this->singleFile = $fileList->first();
     }
 
-    public function getThumb($image = null)
+    public function getCssBlockDimensions()
     {
-        if (!$image) {
-            $image = $this->getPopulated();
+        return $this->getCssDimensions('block');
+    }
+
+    /**
+     * Returns the CSS dimensions for the uploaded image,
+     * uses auto where no dimension is provided.
+     * @param string $mode
+     * @return string
+     */
+    public function getCssDimensions($mode = null)
+    {
+        if (!$this->imageWidth && !$this->imageHeight) {
+            return '';
         }
 
-        return $image->getThumb($this->previewWidth, $this->previewHeight, [
-            'extension' => 'png',
-            'mode' => $this->previewMode
-        ]);
-    }
+        $cssDimensions = '';
 
-    public function getCssSize($addition = 0)
-    {
-        $width = $this->previewWidth != 'auto'
-            ? ($this->previewWidth + $addition) . 'px;'
-            : null;
+        if ($mode == 'block') {
+            $cssDimensions .= ($this->imageWidth)
+                ? 'width: '.$this->imageWidth.'px;'
+                : 'width: '.$this->imageHeight.'px;';
 
-        $height = $this->previewHeight != 'auto'
-            ? ($this->previewHeight + $addition) . 'px;'
-            : null;
-
-        if ($this->previewFluid) {
-            $css = 'max-width: ' . ($width ?: 'none') . 'max-height: ' . ($height ?: 'none');
+            $cssDimensions .= ($this->imageHeight)
+                ? 'height: '.$this->imageHeight.'px;'
+                : 'height: auto;';
         }
         else {
-            $css = 'width: ' . ($width ?: 'auto') . 'height: ' . ($height ?: 'auto');
+            $cssDimensions .= ($this->imageWidth)
+                ? 'width: '.$this->imageWidth.'px;'
+                : 'width: auto;';
+
+            $cssDimensions .= ($this->imageHeight)
+                ? 'height: '.$this->imageHeight.'px;'
+                : 'height: auto;';
         }
 
-        return $css;
+        return $cssDimensions;
     }
 
-    //
-    // AJAX
-    //
+    /**
+     * Adds the bespoke attributes used internally by this widget.
+     * - thumbUrl
+     * - pathUrl
+     * @return System\Models\File
+     */
+    protected function decorateFileAttributes($file)
+    {
+        $path = $thumb = $file->getPath();
+
+        if ($this->isMulti) {
+            $thumb = $file->getThumb(63, 63, $this->thumbOptions);
+        }
+        elseif ($this->imageWidth || $this->imageHeight) {
+            $thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
+        }
+
+        $file->pathUrl = $path;
+        $file->thumbUrl = $thumb;
+
+        return $file;
+    }
 
     public function onRender()
     {
-        if (!$this->isBound)
+        if (!$this->isBound) {
             throw new ApplicationException('There is no model bound to the uploader!');
+        }
 
         if ($populated = $this->property('populated')) {
-            $this->populated = $populated;
+            $this->setPopulated($populated);
         }
     }
 
-    public function onUpdateImage()
+    public function onRemoveAttachment()
     {
-        $image = $this->getPopulated();
-
-        if (($deleteId = post('id')) && post('mode') == 'delete') {
-            if ($deleteImage = $image->find($deleteId)) {
-                $deleteImage->delete();
-            }
+        if (($file_id = post('file_id')) && ($file = File::find($file_id))) {
+            $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
         }
-
-        $this->page['image'] = $image;
     }
 
 }
