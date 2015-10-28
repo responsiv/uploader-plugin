@@ -71,7 +71,7 @@
   position: relative;
 }
 .responsiv-uploader-fileupload .upload-object .icon-container:after {
-  background-image: url('../../../../../system/assets/ui/images/loader-transparent.svg');
+  background-image: url('../../../../../modules/system/assets/ui/images/loader-transparent.svg');
   position: absolute;
   content: ' ';
   width: 40px;

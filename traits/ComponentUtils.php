@@ -8,6 +8,7 @@ use ValidationException;
 use ApplicationException;
 use System\Models\File;
 use October\Rain\Support\Collection;
+use Exception;
 
 trait ComponentUtils
 {
