@@ -4,9 +4,9 @@ Collection of File Upload components for October. This is a port of the back-end
 
 Each component will detect if the relationship is a multiple ("many") or singular ("one") type and render a different control accordingly.
 
-#### Attaching the uploader
+#### Attaching the uploader (from page)
 
-To attach the uploader, you simply initialize the component either on the page or layout:
+To attach the uploader directly to the page as a component, you simply initialize the component either on the page or layout:
 
     [fileUploader]
     maxSize = "2"
@@ -17,7 +17,7 @@ The next step requires a model object and attribute name, take this model for ex
     class Project extends Model
     {
         public $attachMany = [
-            'files' => ['System\Models\File'],
+            'files' => 'System\Models\File',
         ];
     }
 
@@ -52,6 +52,38 @@ Finally we need to render the uploader component on the page using the `{% compo
         <!-- File uploader -->
         {% component 'fileUploader' %}
     </form>
+
+#### Attaching the uploader (from component)
+
+The most effective way to use this plugin is to attach the uploader from another component. Override the `init` method to initialize the uploader inside your component class with the `addComponent` method.
+
+    class MyComponent extends ComponentBase
+    {
+        public function init()
+        {
+            $component = $this->addComponent(
+                'Responsiv\Uploader\Components\FileUploader',
+                'fileUploader',
+                ['deferredBinding' => false]
+            );
+
+            $component->bindModel('files', Project::find(1));
+        }
+    }
+
+The component can then be rendered on the page as normal:
+
+    <form>
+        <!-- File uploader -->
+        {% component 'fileUploader' %}
+    </form>
+
+As a side note, if you wish to refresh the component via an AJAX handler, ensure that you call the `pageCycle` method to initialize the page components.
+
+    public function onRefreshFiles()
+    {
+        $this->pageCycle();
+    }
 
 #### Uploader with deferred binding
 

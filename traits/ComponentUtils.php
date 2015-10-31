@@ -23,6 +23,11 @@ trait ComponentUtils
      */
     public $attribute;
 
+    /**
+     * @var string
+     */
+    public $sessionKey;
+
     public function bindModel($attribute, $model)
     {
         if (is_callable($model))
@@ -150,7 +155,7 @@ trait ComponentUtils
     public function getSessionKey()
     {
         return !!$this->property('deferredBinding')
-            ? post('_session_key')
+            ? post('_session_key', $this->sessionKey)
             : null;
     }
 
