@@ -10,6 +10,9 @@
     {% if __SELF__.fileTypes %}data-file-types="{{ __SELF__.fileTypes }}"{% endif %}
 >
 
+    <!-- Field placeholder -->
+    <input type="hidden" name="_uploader[{{ __SELF__.attribute }}]" value="" />
+
     <!-- Add New Image -->
     <a
         href="javascript:;"
