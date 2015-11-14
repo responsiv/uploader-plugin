@@ -45,14 +45,14 @@ trait ComponentUtils
 
     public function setPopulated($model)
     {
-        if ($this->isMulti) {
-            $this->fileList = $model;
-            $this->singleFile = $model->first();
-        }
-        else {
-            $this->fileList = new Collection([$model]);
-            $this->singleFile = $model;
-        }
+        $list = $this->isMulti ? $model : new Collection([$model]);
+
+        $list->each(function($file) {
+            $this->decorateFileAttributes($file);
+        });
+
+        $this->fileList = $list;
+        $this->singleFile = $list->first();
     }
 
     public function isPopulated()

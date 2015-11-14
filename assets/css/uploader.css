@@ -1,3 +1,8 @@
+.responsiv-uploader-fileupload:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .responsiv-uploader-fileupload .upload-object {
   border-radius: 3px;
   position: relative;

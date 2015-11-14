@@ -103,6 +103,10 @@ class FileUploader extends ComponentBase
         if (!$this->isBound) {
             throw new ApplicationException('There is no model bound to the uploader!');
         }
+
+        if ($populated = $this->property('populated')) {
+            $this->setPopulated($populated);
+        }
     }
 
     /**
