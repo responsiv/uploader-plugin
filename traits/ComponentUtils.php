@@ -170,7 +170,7 @@ trait ComponentUtils
         $types = $this->property('fileTypes', '*');
 
         if (!$types || $types == '*') {
-            return null;
+            $types = implode(',', File::getDefaultFileTypes());
         }
 
         if (!is_array($types)) {

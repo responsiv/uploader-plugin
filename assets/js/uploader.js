@@ -116,9 +116,11 @@
     }
 
     FileUpload.prototype.onUploadAddedFile = function(file) {
+        var $object = $(file.previewElement).data('dzFileObject', file)
+
         // Remove any exisiting objects for single variety
         if (!this.options.isMulti) {
-            $(file.previewElement).siblings().remove()
+            this.removeFileFromElement($object.siblings())
         }
 
         this.evalIsPopulated()
@@ -167,6 +169,13 @@
         }
     }
 
+    FileUpload.prototype.removeFileFromElement = function($element) {
+        var self = this
+        $element.each(function() {
+            self.dropzone.removeFile($(this).data('dzFileObject'))
+        })
+    }
+
     //
     // User interaction
     //
@@ -181,7 +190,7 @@
                 $object.addClass('is-loading')
             })
             .one('ajaxDone', function(){
-                $object.remove()
+                self.removeFileFromElement($object)
                 self.evalIsPopulated()
             })
             .request()
@@ -199,10 +208,13 @@
     FileUpload.prototype.onClickErrorObject = function(ev) {
         var
             self = this,
-            $target = $(ev.target).closest('.upload-object'),
-            errorMsg = $('[data-dz-errormessage]', $target).text()
+            $object = $(ev.target).closest('.upload-object'),
+            errorMsg = $('[data-dz-errormessage]', $object).text()
 
         alert(errorMsg)
+
+        this.removeFileFromElement($object)
+        self.evalIsPopulated()
     }
 
     //
