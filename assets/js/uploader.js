@@ -171,8 +171,17 @@
 
     FileUpload.prototype.removeFileFromElement = function($element) {
         var self = this
+
         $element.each(function() {
-            self.dropzone.removeFile($(this).data('dzFileObject'))
+            var $el = $(this),
+                obj = $el.data('dzFileObject')
+
+            if (obj) {
+                self.dropzone.removeFile(obj)
+            }
+            else {
+                $el.remove()
+            }
         })
     }
 
