@@ -12,7 +12,7 @@ class ImageUploader extends ComponentBase
     public $maxSize;
     public $imageWidth;
     public $imageHeight;
-    public $previewMode;
+    public $imageMode;
     public $previewFluid;
     public $placeholderText;
 
@@ -91,7 +91,7 @@ class ImageUploader extends ComponentBase
                 'default'     => '100',
                 'type'        => 'string',
             ],
-            'previewMode' => [
+            'imageMode' => [
                 'title'       => 'Image preview mode',
                 'description' => 'Thumb mode for the preview, eg: exact, portrait, landscape, auto or crop',
                 'default'     => 'crop',
@@ -117,9 +117,11 @@ class ImageUploader extends ComponentBase
         $this->maxSize = $this->property('maxSize');
         $this->imageWidth = $this->property('imageWidth');
         $this->imageHeight = $this->property('imageHeight');
-        $this->previewMode = $this->property('previewMode');
+        $this->imageMode = $this->property('imageMode');
         $this->previewFluid = $this->property('previewFluid');
         $this->placeholderText = $this->property('placeholderText');
+
+        $this->thumbOptions['mode'] = $this->imageMode;
     }
 
     public function onRun()
