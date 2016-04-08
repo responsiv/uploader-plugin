@@ -9,6 +9,7 @@ use ApplicationException;
 use System\Models\File;
 use October\Rain\Support\Collection;
 use Exception;
+use October\Rain\Filesystem\Definitions;
 
 trait ComponentUtils
 {
@@ -170,7 +171,7 @@ trait ComponentUtils
         $types = $this->property('fileTypes', '*');
 
         if (!$types || $types == '*') {
-            $types = implode(',', File::getDefaultFileTypes());
+            $types = implode(',', Definitions::get('defaultExtensions'));
         }
 
         if (!is_array($types)) {
