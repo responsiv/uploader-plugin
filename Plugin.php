@@ -7,7 +7,6 @@ use System\Classes\PluginBase;
  */
 class Plugin extends PluginBase
 {
-
     /**
      * Returns information about this plugin.
      *
@@ -19,7 +18,8 @@ class Plugin extends PluginBase
             'name'        => 'Uploader',
             'description' => 'Tools for uploading files and photos',
             'author'      => 'Responsiv Internet',
-            'icon'        => 'icon-leaf'
+            'icon'        => 'icon-leaf',
+            'homepage'    => 'https://github.com/responsiv/uploader-plugin'
         ];
     }
 
@@ -30,5 +30,4 @@ class Plugin extends PluginBase
            'Responsiv\Uploader\Components\ImageUploader' => 'imageUploader',
         ];
     }
-
 }
