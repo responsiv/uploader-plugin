@@ -2,6 +2,8 @@
 
 Collection of File Upload components for October. This is a port of the back-end `fileupload` form widget. There are two primary components provided by this plugin: image uploader and file uploader. The image upload is suitable for uploading photos with thumbnails, whereas the file uploader is suitable for any type of file.
 
+> **Note**: This is a developer tool and is recommended only if you know what you are doing.
+
 Each component will detect if the relationship is a multiple ("many") or singular ("one") type and render a different control accordingly.
 
 #### Attaching the uploader (from page)
