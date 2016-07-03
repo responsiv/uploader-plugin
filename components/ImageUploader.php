@@ -188,10 +188,11 @@ class ImageUploader extends ComponentBase
     protected function decorateFileAttributes($file)
     {
         $path = $thumb = $file->getPath();
-        
-        if(!empty($this->imageWidth) || !empty($this->imageHeight)) {
+
+        if (!empty($this->imageWidth) || !empty($this->imageHeight)) {
             $thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
-        } else {
+        }
+        else {
             $thumb = $file->getThumb(63, 63, $this->thumbOptions);
         }
 
