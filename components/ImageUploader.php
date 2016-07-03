@@ -211,6 +211,9 @@ class ImageUploader extends ComponentBase
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
         }
+        
+        $this->fileList = $fileList = $this->getFileList();
+        $this->singleFile = $fileList->first();
     }
 
     public function onRemoveAttachment()
