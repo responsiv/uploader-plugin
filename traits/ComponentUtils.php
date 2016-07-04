@@ -44,6 +44,14 @@ trait ComponentUtils
         }
     }
 
+    public function autoPopulate()
+    {
+        if (!$this->isPopulated()) {
+            $this->fileList = $fileList = $this->getFileList();
+            $this->singleFile = $fileList->first();
+        }
+    }
+
     public function setPopulated($model)
     {
         $list = $this->isMulti ? $model : new Collection([$model]);

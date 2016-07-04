@@ -94,8 +94,7 @@ class FileUploader extends ComponentBase
             return $result;
         }
 
-        $this->fileList = $fileList = $this->getFileList();
-        $this->singleFile = $fileList->first();
+        $this->autoPopulate();
     }
 
     public function onRender()
@@ -106,6 +105,9 @@ class FileUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
+        }
+        else {
+            $this->autoPopulate();
         }
     }
 

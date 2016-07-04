@@ -134,8 +134,7 @@ class ImageUploader extends ComponentBase
             return $result;
         }
 
-        $this->fileList = $fileList = $this->getFileList();
-        $this->singleFile = $fileList->first();
+        $this->autoPopulate();
     }
 
     public function getCssBlockDimensions()
@@ -210,6 +209,9 @@ class ImageUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
+        }
+        else {
+            $this->autoPopulate();
         }
     }
 
