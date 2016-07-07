@@ -75,6 +75,10 @@ trait ComponentUtils
 
     public function getFileList()
     {
+        if (!is_string($this->attribute)) {
+            throw new ApplicationException(sprintf('Attribute name must be a string, %s was passed.', gettype($this->attribute)));
+        }
+
         /*
          * Use deferred bindings
          */
