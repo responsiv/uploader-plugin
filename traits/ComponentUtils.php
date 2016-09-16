@@ -142,7 +142,10 @@ trait ComponentUtils
                 throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
             }
 
-            $file = new File;
+            
+            $fileModel = $this->model->getRelationDefinition($this->attribute)[0];
+            
+            $file = new $fileModel;
             $file->data = $uploadedFile;
             $file->is_public = true;
             $file->save();
