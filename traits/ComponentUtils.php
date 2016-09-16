@@ -142,8 +142,8 @@ trait ComponentUtils
                 throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
             }
 
-            $relationType = $this->model->getRelationType($this->attribute);
-            $fileModel = $this->model->{$relationType}[$this->attribute];
+            
+            $fileModel = $this->model->getRelationDefinition($this->attribute)[0];
             
             $file = new $fileModel;
             $file->data = $uploadedFile;
