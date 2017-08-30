@@ -124,7 +124,7 @@ trait ComponentUtils
             $uploadedFile = Input::file('file_data');
 
 
-            $validationRules = ['max:'.File::getMaxFilesize()];
+            $validationRules = ['max:'.$this->getMaxFileSize()];
             if ($fileTypes = $this->processFileTypes()) {
                 $validationRules[] = 'extensions:'.$fileTypes;
             }
@@ -209,4 +209,18 @@ trait ComponentUtils
 
         return implode(',', $types);
     }
+    
+    
+	/**
+	 * Get the max File Size
+	 *
+	 * @return int
+	 */
+	protected function getMaxFileSize(){
+		if ($maxSize = $this->property('maxSize')) {
+			return round($maxSize * 1024);
+		} else {
+			return File::getMaxFilesize();
+		}
+	}
 }
