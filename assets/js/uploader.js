@@ -323,7 +323,7 @@
 
     // FILEUPLOAD DATA-API
     // ===============
-    $(document).render(function () {
+    $(document).ready(function () {
         $('[data-control="fileupload"]').fileUploader()
     })
 
