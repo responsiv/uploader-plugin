@@ -205,18 +205,18 @@ trait ComponentUtils
 
         return implode(',', $types);
     }
-    
-    
-	/**
-	 * Get the max File Size
-	 *
-	 * @return int
-	 */
-	protected function getMaxFileSize(){
-		if ($maxSize = $this->property('maxSize')) {
-			return round($maxSize * 1024);
-		} else {
-			return File::getMaxFilesize();
-		}
-	}
+
+    /**
+     * Get the max File Size
+     * @return int
+     */
+    protected function getMaxFileSize()
+    {
+        if ($maxSize = $this->property('maxSize')) {
+            return round($maxSize * 1024);
+        }
+        else {
+            return File::getMaxFilesize();
+        }
+    }
 }
