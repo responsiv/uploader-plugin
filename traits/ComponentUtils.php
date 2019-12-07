@@ -4,16 +4,15 @@ use Input;
 use Request;
 use Response;
 use Validator;
-use ValidationException;
-use ApplicationException;
 use System\Models\File;
 use October\Rain\Support\Collection;
-use Exception;
 use October\Rain\Filesystem\Definitions;
+use ApplicationException;
+use ValidationException;
+use Exception;
 
 trait ComponentUtils
 {
-
     /**
      * @var Model
      */
@@ -31,8 +30,9 @@ trait ComponentUtils
 
     public function bindModel($attribute, $model)
     {
-        if (is_callable($model))
+        if (is_callable($model)) {
             $model = $model();
+        }
 
         $this->model = $model;
         $this->attribute = $attribute;
@@ -110,12 +110,8 @@ trait ComponentUtils
         return $list;
     }
 
-    protected function checkUploadAction()
+    public function onUpload()
     {
-        if (!($uniqueId = Request::header('X-OCTOBER-FILEUPLOAD')) || $uniqueId != $this->alias) {
-            return;
-        }
-
         try {
             if (!Input::hasFile('file_data')) {
                 throw new ApplicationException('File missing from request');
@@ -124,7 +120,7 @@ trait ComponentUtils
             $uploadedFile = Input::file('file_data');
 
 
-            $validationRules = ['max:'.File::getMaxFilesize()];
+            $validationRules = ['max:'.$this->getMaxFileSize()];
             if ($fileTypes = $this->processFileTypes()) {
                 $validationRules[] = 'extensions:'.$fileTypes;
             }
@@ -141,7 +137,6 @@ trait ComponentUtils
             if (!$uploadedFile->isValid()) {
                 throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
             }
-
 
             $relationDefinition = $this->model->getRelationDefinition($this->attribute);
             $fileModel = $relationDefinition[0];
@@ -210,5 +205,19 @@ trait ComponentUtils
         }, $types);
 
         return implode(',', $types);
+    }
+
+    /**
+     * Get the max File Size
+     * @return int
+     */
+    protected function getMaxFileSize()
+    {
+        if ($maxSize = $this->property('maxSize')) {
+            return round($maxSize * 1024);
+        }
+        else {
+            return File::getMaxFilesize();
+        }
     }
 }

@@ -8,10 +8,10 @@ use ApplicationException;
 
 class FileUploader extends ComponentBase
 {
-
     use \Responsiv\Uploader\Traits\ComponentUtils;
 
     public $maxSize;
+
     public $placeholderText;
 
     /**
@@ -90,10 +90,6 @@ class FileUploader extends ComponentBase
         $this->addJs('assets/vendor/dropzone/dropzone.js');
         $this->addJs('assets/js/uploader.js');
 
-        if ($result = $this->checkUploadAction()) {
-            return $result;
-        }
-
         $this->autoPopulate();
     }
 
@@ -130,5 +126,4 @@ class FileUploader extends ComponentBase
             $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
         }
     }
-
 }
