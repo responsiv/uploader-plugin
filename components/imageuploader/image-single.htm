@@ -5,6 +5,7 @@
     data-control="fileupload"
     data-template="#uploaderTemplate{{ __SELF__ }}"
     data-unique-id="{{ __SELF__ }}"
+    data-upload-handler="onUpload"
     data-thumbnail-width="{{ __SELF__.imageWidth ?: '0' }}"
     data-thumbnail-height="{{ __SELF__.imageHeight ?: '0' }}"
     {% if __SELF__.fileTypes %}data-file-types="{{ __SELF__.fileTypes }}"{% endif %}

@@ -3,6 +3,7 @@
     data-control="fileupload"
     data-template="#uploaderTemplate{{ __SELF__ }}"
     data-unique-id="{{ __SELF__ }}"
+    data-upload-handler="onUpload"
     {% if __SELF__.fileTypes %}data-file-types="{{ __SELF__.fileTypes }}"{% endif %}
 >
 

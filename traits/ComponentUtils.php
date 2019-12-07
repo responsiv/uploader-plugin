@@ -110,12 +110,8 @@ trait ComponentUtils
         return $list;
     }
 
-    protected function checkUploadAction()
+    public function onUpload()
     {
-        if (!($uniqueId = Request::header('X-OCTOBER-FILEUPLOAD')) || $uniqueId != $this->alias) {
-            return;
-        }
-
         try {
             if (!Input::hasFile('file_data')) {
                 throw new ApplicationException('File missing from request');
