@@ -130,10 +130,6 @@ class ImageUploader extends ComponentBase
         $this->addJs('assets/vendor/dropzone/dropzone.js');
         $this->addJs('assets/js/uploader.js');
 
-        if ($result = $this->checkUploadAction()) {
-            return $result;
-        }
-
         $this->autoPopulate();
     }
 
