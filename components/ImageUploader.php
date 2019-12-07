@@ -6,14 +6,18 @@ use ApplicationException;
 
 class ImageUploader extends ComponentBase
 {
-
     use \Responsiv\Uploader\Traits\ComponentUtils;
 
     public $maxSize;
+
     public $imageWidth;
+
     public $imageHeight;
+
     public $imageMode;
+
     public $previewFluid;
+
     public $placeholderText;
 
     /**
@@ -217,5 +221,4 @@ class ImageUploader extends ComponentBase
             $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
         }
     }
-
 }

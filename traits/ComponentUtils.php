@@ -4,16 +4,15 @@ use Input;
 use Request;
 use Response;
 use Validator;
-use ValidationException;
-use ApplicationException;
 use System\Models\File;
 use October\Rain\Support\Collection;
-use Exception;
 use October\Rain\Filesystem\Definitions;
+use ApplicationException;
+use ValidationException;
+use Exception;
 
 trait ComponentUtils
 {
-
     /**
      * @var Model
      */
@@ -31,8 +30,9 @@ trait ComponentUtils
 
     public function bindModel($attribute, $model)
     {
-        if (is_callable($model))
+        if (is_callable($model)) {
             $model = $model();
+        }
 
         $this->model = $model;
         $this->attribute = $attribute;
@@ -138,9 +138,9 @@ trait ComponentUtils
                 throw new ApplicationException(sprintf('File %s is not valid.', $uploadedFile->getClientOriginalName()));
             }
 
-            
+
             $fileModel = $this->model->getRelationDefinition($this->attribute)[0];
-            
+
             $file = new $fileModel;
             $file->data = $uploadedFile;
             $file->is_public = true;

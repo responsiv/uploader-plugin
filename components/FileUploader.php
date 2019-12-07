@@ -8,10 +8,10 @@ use ApplicationException;
 
 class FileUploader extends ComponentBase
 {
-
     use \Responsiv\Uploader\Traits\ComponentUtils;
 
     public $maxSize;
+
     public $placeholderText;
 
     /**
@@ -126,5 +126,4 @@ class FileUploader extends ComponentBase
             $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
         }
     }
-
 }
