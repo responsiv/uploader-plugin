@@ -86,9 +86,11 @@ class FileUploader extends ComponentBase
 
     public function onRun()
     {
-        $this->addCss('assets/css/uploader.css');
-        $this->addJs('assets/vendor/dropzone/dropzone.js');
-        $this->addJs('assets/js/uploader.js');
+        $this->addCss(['assets/css/uploader.css']);
+        $this->addJs([
+            'assets/vendor/dropzone/dropzone.js',
+            'assets/js/uploader.js',
+        ]);
 
         $this->autoPopulate();
     }
