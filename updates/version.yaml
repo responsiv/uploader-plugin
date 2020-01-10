@@ -2,3 +2,4 @@
 1.0.2: Added JavaScript events for change, upload success and remove upload
 1.0.3: Fix multiple uploads occuring in newer builds
 1.0.4: Corrected support for maxSize property
+1.0.5: Allow multiple uploaders on the same page
