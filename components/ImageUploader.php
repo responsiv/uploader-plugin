@@ -57,8 +57,8 @@ class ImageUploader extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Image Uploader',
-            'description' => 'Upload an image with preview'
+            'name'        => 'responsiv.uploader::lang.component.image_uploader',
+            'description' => 'responsiv.uploader::lang.component.image_uploader_desc'
         ];
     }
 
@@ -66,50 +66,50 @@ class ImageUploader extends ComponentBase
     {
         return [
             'placeholderText' => [
-                'title'       => 'Placeholder text',
-                'description' => 'Wording to display when no image is uploaded',
+                'title'       => 'responsiv.uploader::lang.prop.placeholder',
+                'description' => 'responsiv.uploader::lang.prop.placeholder_img_desc',
                 'default'     => 'Click or drag images to upload',
                 'type'        => 'string',
             ],
             'maxSize' => [
-                'title'       => 'Max file size (MB)',
-                'description' => 'The maximum file size that can be uploaded in megabytes.',
+                'title'       => 'responsiv.uploader::lang.prop.maxSize',
+                'description' => 'responsiv.uploader::lang.prop.maxSize_desc',
                 'default'     => '5',
                 'type'        => 'string',
             ],
             'fileTypes' => [
-                'title'       => 'Supported file types',
-                'description' => 'File extensions separated by commas (,) or star (*) to allow all types.',
+                'title'       => 'responsiv.uploader::lang.prop.fileTypes',
+                'description' => 'responsiv.uploader::lang.prop.fileTypes_desc',
                 'default'     => '.gif,.jpg,.jpeg,.png',
                 'type'        => 'string',
             ],
             'imageWidth' => [
-                'title'       => 'Image preview width',
-                'description' => 'Enter an amount in pixels, eg: 100',
+                'title'       => 'responsiv.uploader::lang.prop.imageWidth',
+                'description' => 'responsiv.uploader::lang.prop.imageWidth_desc',
                 'default'     => '100',
                 'type'        => 'string',
             ],
             'imageHeight' => [
-                'title'       => 'Image preview height',
-                'description' => 'Enter an amount in pixels, eg: 100',
+                'title'       => 'responsiv.uploader::lang.prop.imageHeight',
+                'description' => 'responsiv.uploader::lang.prop.imageHeight_desc',
                 'default'     => '100',
                 'type'        => 'string',
             ],
             'imageMode' => [
-                'title'       => 'Image preview mode',
-                'description' => 'Thumb mode for the preview, eg: exact, portrait, landscape, auto or crop',
+                'title'       => 'responsiv.uploader::lang.prop.imageMode',
+                'description' => 'responsiv.uploader::lang.prop.imageMode_desc',
                 'default'     => 'crop',
                 'type'        => 'string',
             ],
             // 'previewFluid' => [
-            //     'title'       => 'Fluid preview',
-            //     'description' => 'The image should expand to fit the size of its container',
+            //     'title'       => 'responsiv.uploader::lang.prop.previewFluid',
+            //     'description' => 'responsiv.uploader::lang.prop.previewFluid_desc',
             //     'default'     => 0,
             //     'type'        => 'checkbox',
             // ],
             'deferredBinding' => [
-                'title'       => 'Use deferred binding',
-                'description' => 'If checked the associated model must be saved for the upload to be bound.',
+                'title'       => 'responsiv.uploader::lang.prop.deferredBinding',
+                'description' => 'responsiv.uploader::lang.prop.deferredBinding_desc',
                 'type'        => 'checkbox',
             ],
         ];

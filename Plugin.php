@@ -15,10 +15,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'Uploader',
-            'description' => 'Tools for uploading files and photos',
+            'name'        => 'responsiv.uploader::lang.plugin.name',
+            'description' => 'responsiv.uploader::lang.plugin.desc',
             'author'      => 'Responsiv Internet',
-            'icon'        => 'icon-leaf',
+            'icon'        => 'icon-download',
             'homepage'    => 'https://github.com/responsiv/uploader-plugin'
         ];
     }
