@@ -133,7 +133,7 @@ trait ComponentUtils
             $validation = Validator::make(
                 ['file_data' => $uploadedFile],
                 ['file_data' => $validationRules],
-                $this->model->customMessages?$this->model->customMessages:[]
+                $this->model->customMessages ? $this->model->customMessages : []
             );
 
             if ($validation->fails()) {
