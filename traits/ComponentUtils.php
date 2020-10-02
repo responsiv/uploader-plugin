@@ -124,9 +124,11 @@ trait ComponentUtils
             if ($fileTypes = $this->processFileTypes()) {
                 $validationRules[] = 'extensions:'.$fileTypes;
             }
-            //custom validations
-            if (isset($this->model->rules[$this->attribute]))
+
+            // Support model validation rules
+            if (!empty($this->model->rules[$this->attribute])) {
                 $validationRules[] = $this->model->rules[$this->attribute];
+            }
 
             $validation = Validator::make(
                 ['file_data' => $uploadedFile],
