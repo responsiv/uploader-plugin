@@ -1,4 +1,6 @@
-<?php namespace Responsiv\Uploader\Traits;
+<?php
+
+namespace Responsiv\Uploader\Traits;
 
 use Input;
 use Request;
@@ -56,7 +58,7 @@ trait ComponentUtils
     {
         $list = $this->isMulti ? $model : new Collection([$model]);
 
-        $list->each(function($file) {
+        $list->each(function ($file) {
             $this->decorateFileAttributes($file);
         });
 
@@ -88,8 +90,7 @@ trait ComponentUtils
                 ->withDeferred($sessionKey)
                 ->orderBy('id', 'desc')
                 ->get();
-        }
-        else {
+        } else {
             $list = $this->model
                 ->{$this->attribute}()
                 ->orderBy('id', 'desc')
@@ -103,7 +104,7 @@ trait ComponentUtils
         /*
          * Decorate each file with thumb
          */
-        $list->each(function($file) {
+        $list->each(function ($file) {
             $this->decorateFileAttributes($file);
         });
 
@@ -120,9 +121,9 @@ trait ComponentUtils
             $uploadedFile = Input::file('file_data');
 
 
-            $validationRules = ['max:'.$this->getMaxFileSize()];
+            $validationRules = ['max:' . $this->getMaxFileSize()];
             if ($fileTypes = $this->processFileTypes()) {
-                $validationRules[] = 'extensions:'.$fileTypes;
+                $validationRules[] = 'extensions:' . $fileTypes;
             }
 
             $validation = Validator::make(
@@ -158,12 +159,36 @@ trait ComponentUtils
             ];
 
             return Response::json($result, 200);
-
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             return Response::json($ex->getMessage(), 400);
         }
     }
+
+    public function onRemoveAttachment()
+    {
+        if (!$file_id = post('file_id')) {
+            return;
+        }
+
+        /*
+         * Use deferred bindings
+         */
+        if ($sessionKey = $this->getSessionKey()) {
+            $file = $this->model
+                ->{$this->attribute}()
+                ->withDeferred($sessionKey)
+                ->find($file_id);
+        } else {
+            $file = $this->model
+                ->{$this->attribute}()
+                ->find($file_id);
+        }
+
+        if ($file) {
+            $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
+        }
+    }
+
 
     public function getSessionKey()
     {
@@ -190,7 +215,7 @@ trait ComponentUtils
             $types = explode(',', $types);
         }
 
-        $types = array_map(function($value) use ($includeDot) {
+        $types = array_map(function ($value) use ($includeDot) {
             $value = trim($value);
 
             if (substr($value, 0, 1) == '.') {
@@ -198,7 +223,7 @@ trait ComponentUtils
             }
 
             if ($includeDot) {
-                $value = '.'.$value;
+                $value = '.' . $value;
             }
 
             return $value;
@@ -215,8 +240,7 @@ trait ComponentUtils
     {
         if ($maxSize = $this->property('maxSize')) {
             return round($maxSize * 1024);
-        }
-        else {
+        } else {
             return File::getMaxFilesize();
         }
     }

@@ -1,4 +1,6 @@
-<?php namespace Responsiv\Uploader\Components;
+<?php
+
+namespace Responsiv\Uploader\Components;
 
 use System\Models\File;
 use Cms\Classes\ComponentBase;
@@ -160,20 +162,19 @@ class ImageUploader extends ComponentBase
 
         if ($mode == 'block') {
             $cssDimensions .= ($this->imageWidth)
-                ? 'width: '.$this->imageWidth.'px;'
-                : 'width: '.$this->imageHeight.'px;';
+                ? 'width: ' . $this->imageWidth . 'px;'
+                : 'width: ' . $this->imageHeight . 'px;';
 
             $cssDimensions .= ($this->imageHeight)
-                ? 'height: '.$this->imageHeight.'px;'
+                ? 'height: ' . $this->imageHeight . 'px;'
                 : 'height: auto;';
-        }
-        else {
+        } else {
             $cssDimensions .= ($this->imageWidth)
-                ? 'width: '.$this->imageWidth.'px;'
+                ? 'width: ' . $this->imageWidth . 'px;'
                 : 'width: auto;';
 
             $cssDimensions .= ($this->imageHeight)
-                ? 'height: '.$this->imageHeight.'px;'
+                ? 'height: ' . $this->imageHeight . 'px;'
                 : 'height: auto;';
         }
 
@@ -192,8 +193,7 @@ class ImageUploader extends ComponentBase
 
         if (!empty($this->imageWidth) || !empty($this->imageHeight)) {
             $thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
-        }
-        else {
+        } else {
             $thumb = $file->getThumb(63, 63, $this->thumbOptions);
         }
 
@@ -211,16 +211,8 @@ class ImageUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
-        }
-        else {
+        } else {
             $this->autoPopulate();
-        }
-    }
-
-    public function onRemoveAttachment()
-    {
-        if (($file_id = post('file_id')) && ($file = File::find($file_id))) {
-            $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
         }
     }
 }
