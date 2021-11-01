@@ -43,8 +43,8 @@ class FileUploader extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'File Uploader',
-            'description' => 'Upload a file'
+            'name'        => 'responsiv.uploader::lang.component.file_uploader',
+            'description' => 'responsiv.uploader::lang.component.file_uploader_desc'
         ];
     }
 
@@ -52,26 +52,26 @@ class FileUploader extends ComponentBase
     {
         return [
             'placeholderText' => [
-                'title'       => 'Placeholder text',
-                'description' => 'Wording to display when no file is uploaded',
+                'title'       => 'responsiv.uploader::lang.prop.placeholder',
+                'description' => 'responsiv.uploader::lang.prop.placeholder_file_desc',
                 'default'     => 'Click or drag files to upload',
                 'type'        => 'string',
             ],
             'maxSize' => [
-                'title'       => 'Max file size (MB)',
-                'description' => 'The maximum file size that can be uploaded in megabytes.',
+                'title'       => 'responsiv.uploader::lang.prop.maxSize',
+                'description' => 'responsiv.uploader::lang.prop.maxSize_desc',
                 'default'     => '5',
                 'type'        => 'string',
             ],
             'fileTypes' => [
-                'title'       => 'Supported file types',
-                'description' => 'File extensions separated by commas (,) or star (*) to allow all types.',
+                'title'       => 'responsiv.uploader::lang.prop.fileTypes',
+                'description' => 'responsiv.uploader::lang.prop.fileTypes_desc',
                 'default'     => '*',
                 'type'        => 'string',
             ],
             'deferredBinding' => [
-                'title'       => 'Use deferred binding',
-                'description' => 'If checked the associated model must be saved for the upload to be bound.',
+                'title'       => 'responsiv.uploader::lang.prop.deferredBinding',
+                'description' => 'responsiv.uploader::lang.prop.deferredBinding_desc',
                 'type'        => 'checkbox',
             ],
         ];

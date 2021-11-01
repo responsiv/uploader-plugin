@@ -29,7 +29,7 @@
                             href="javascript:;"
                             class="upload-remove-button"
                             data-request="{{ __SELF__ ~ '::onRemoveAttachment' }}"
-                            data-request-confirm="Are you sure?"
+                            data-request-confirm="{{ 'responsiv.uploader::lang.are_you_sure' | trans }}"
                             data-request-data="file_id: {{ file.id }}"
                             >&times;</a>
                     </h4>
@@ -54,7 +54,7 @@
                     href="javascript:;"
                     class="upload-remove-button"
                     data-request="{{ __SELF__ ~ '::onRemoveAttachment' }}"
-                    data-request-confirm="Are you sure?"
+                    data-request-confirm="{{ 'responsiv.uploader::lang.are_you_sure' | trans }}"
                     >&times;</a>
             </h4>
             <p class="size" data-dz-size></p>
