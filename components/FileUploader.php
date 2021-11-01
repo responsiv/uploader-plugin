@@ -1,6 +1,4 @@
-<?php
-
-namespace Responsiv\Uploader\Components;
+<?php namespace Responsiv\Uploader\Components;
 
 use Input;
 use Cms\Classes\ComponentBase;
@@ -97,6 +95,9 @@ class FileUploader extends ComponentBase
         $this->autoPopulate();
     }
 
+    /**
+     * onRender
+     */
     public function onRender()
     {
         if (!$this->isBound) {
@@ -105,7 +106,8 @@ class FileUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
-        } else {
+        }
+        else {
             $this->autoPopulate();
         }
     }

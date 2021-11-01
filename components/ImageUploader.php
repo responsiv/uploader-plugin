@@ -1,6 +1,4 @@
-<?php
-
-namespace Responsiv\Uploader\Components;
+<?php namespace Responsiv\Uploader\Components;
 
 use System\Models\File;
 use Cms\Classes\ComponentBase;
@@ -168,7 +166,8 @@ class ImageUploader extends ComponentBase
             $cssDimensions .= ($this->imageHeight)
                 ? 'height: ' . $this->imageHeight . 'px;'
                 : 'height: auto;';
-        } else {
+        }
+        else {
             $cssDimensions .= ($this->imageWidth)
                 ? 'width: ' . $this->imageWidth . 'px;'
                 : 'width: auto;';
@@ -193,7 +192,8 @@ class ImageUploader extends ComponentBase
 
         if (!empty($this->imageWidth) || !empty($this->imageHeight)) {
             $thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
-        } else {
+        }
+        else {
             $thumb = $file->getThumb(63, 63, $this->thumbOptions);
         }
 
@@ -211,7 +211,8 @@ class ImageUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
-        } else {
+        }
+        else {
             $this->autoPopulate();
         }
     }

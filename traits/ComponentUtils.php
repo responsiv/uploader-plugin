@@ -1,6 +1,4 @@
-<?php
-
-namespace Responsiv\Uploader\Traits;
+<?php namespace Responsiv\Uploader\Traits;
 
 use Input;
 use Request;
@@ -90,7 +88,8 @@ trait ComponentUtils
                 ->withDeferred($sessionKey)
                 ->orderBy('id', 'desc')
                 ->get();
-        } else {
+        }
+        else {
             $list = $this->model
                 ->{$this->attribute}()
                 ->orderBy('id', 'desc')
@@ -165,14 +164,18 @@ trait ComponentUtils
             ];
 
             return Response::json($result, 200);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             return Response::json($ex->getMessage(), 400);
         }
     }
 
+    /**
+     * onRemoveAttachment removes an attachment
+     */
     public function onRemoveAttachment()
     {
-        if (!$file_id = post('file_id')) {
+        if (!$fileId = post('file_id')) {
             return;
         }
 
@@ -183,11 +186,12 @@ trait ComponentUtils
             $file = $this->model
                 ->{$this->attribute}()
                 ->withDeferred($sessionKey)
-                ->find($file_id);
-        } else {
+                ->find($fileId);
+        }
+        else {
             $file = $this->model
                 ->{$this->attribute}()
-                ->find($file_id);
+                ->find($fileId);
         }
 
         if ($file) {
@@ -195,7 +199,9 @@ trait ComponentUtils
         }
     }
 
-
+    /**
+     * getSessionKey
+     */
     public function getSessionKey()
     {
         return !!$this->property('deferredBinding')
@@ -239,14 +245,15 @@ trait ComponentUtils
     }
 
     /**
-     * Get the max File Size
+     * getMaxFileSize
      * @return int
      */
     protected function getMaxFileSize()
     {
         if ($maxSize = $this->property('maxSize')) {
             return round($maxSize * 1024);
-        } else {
+        }
+        else {
             return File::getMaxFilesize();
         }
     }
