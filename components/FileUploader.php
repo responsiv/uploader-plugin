@@ -1,4 +1,6 @@
-<?php namespace Responsiv\Uploader\Components;
+<?php
+
+namespace Responsiv\Uploader\Components;
 
 use Input;
 use Cms\Classes\ComponentBase;
@@ -103,8 +105,7 @@ class FileUploader extends ComponentBase
 
         if ($populated = $this->property('populated')) {
             $this->setPopulated($populated);
-        }
-        else {
+        } else {
             $this->autoPopulate();
         }
     }
@@ -120,12 +121,5 @@ class FileUploader extends ComponentBase
         $file->pathUrl = $file->thumbUrl = $file->getPath();
 
         return $file;
-    }
-
-    public function onRemoveAttachment()
-    {
-        if (($file_id = post('file_id')) && ($file = File::find($file_id))) {
-            $this->model->{$this->attribute}()->remove($file, $this->getSessionKey());
-        }
     }
 }
