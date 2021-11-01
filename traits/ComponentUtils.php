@@ -125,9 +125,15 @@ trait ComponentUtils
                 $validationRules[] = 'extensions:'.$fileTypes;
             }
 
+            // Support model validation rules
+            if (!empty($this->model->rules[$this->attribute])) {
+                $validationRules[] = $this->model->rules[$this->attribute];
+            }
+
             $validation = Validator::make(
                 ['file_data' => $uploadedFile],
-                ['file_data' => $validationRules]
+                ['file_data' => $validationRules],
+                $this->model->customMessages ? $this->model->customMessages : []
             );
 
             if ($validation->fails()) {
