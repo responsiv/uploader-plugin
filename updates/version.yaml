@@ -3,3 +3,4 @@
 1.0.3: Fix multiple uploads occuring in newer builds
 1.0.4: Corrected support for maxSize property
 1.0.5: Allow multiple uploaders on the same page
+1.0.6: Fixes compatibility with Debugbar plugin

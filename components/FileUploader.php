@@ -1,49 +1,51 @@
 <?php namespace Responsiv\Uploader\Components;
 
-use Input;
 use Cms\Classes\ComponentBase;
-use System\Models\File;
-use System\Classes\CombineAssets;
 use ApplicationException;
 
 class FileUploader extends ComponentBase
 {
     use \Responsiv\Uploader\Traits\ComponentUtils;
 
-    public $maxSize;
-
-    public $placeholderText;
-
     /**
-     * Supported file types.
-     * @var array
+     * @var array fileTypes supported
      */
     public $fileTypes;
 
     /**
-     * @var bool Has the model been bound.
+     * @var bool isBound determines if the model been bound.
      */
     protected $isBound = false;
 
     /**
-     * @var bool Is the related attribute a "many" type.
+     * @var bool isMulti true if the related attribute a "many" type.
      */
     public $isMulti = false;
 
     /**
-     * @var Collection
+     * @var Collection fileList
      */
     public $fileList;
 
     /**
-     * @var Model
+     * @var Model singleFile
      */
     public $singleFile;
+
+    /**
+     * @var string|int maxSize
+     */
+    public $maxSize;
+
+    /**
+     * @var string placeholderText
+     */
+    public $placeholderText;
 
     public function componentDetails()
     {
         return [
-            'name'        => 'responsiv.uploader::lang.component.file_uploader',
+            'name' => 'responsiv.uploader::lang.component.file_uploader',
             'description' => 'responsiv.uploader::lang.component.file_uploader_desc'
         ];
     }
@@ -52,31 +54,34 @@ class FileUploader extends ComponentBase
     {
         return [
             'placeholderText' => [
-                'title'       => 'responsiv.uploader::lang.prop.placeholder',
+                'title' => 'responsiv.uploader::lang.prop.placeholder',
                 'description' => 'responsiv.uploader::lang.prop.placeholder_file_desc',
-                'default'     => 'Click or drag files to upload',
-                'type'        => 'string',
+                'default' => 'Click or drag files to upload',
+                'type' => 'string',
             ],
             'maxSize' => [
-                'title'       => 'responsiv.uploader::lang.prop.maxSize',
+                'title' => 'responsiv.uploader::lang.prop.maxSize',
                 'description' => 'responsiv.uploader::lang.prop.maxSize_desc',
-                'default'     => '5',
-                'type'        => 'string',
+                'default' => '5',
+                'type' => 'string',
             ],
             'fileTypes' => [
-                'title'       => 'responsiv.uploader::lang.prop.fileTypes',
+                'title' => 'responsiv.uploader::lang.prop.fileTypes',
                 'description' => 'responsiv.uploader::lang.prop.fileTypes_desc',
-                'default'     => '*',
-                'type'        => 'string',
+                'default' => '*',
+                'type' => 'string',
             ],
             'deferredBinding' => [
-                'title'       => 'responsiv.uploader::lang.prop.deferredBinding',
+                'title' => 'responsiv.uploader::lang.prop.deferredBinding',
                 'description' => 'responsiv.uploader::lang.prop.deferredBinding_desc',
-                'type'        => 'checkbox',
+                'type' => 'checkbox',
             ],
         ];
     }
 
+    /**
+     * init
+     */
     public function init()
     {
         $this->fileTypes = $this->processFileTypes(true);
@@ -84,6 +89,9 @@ class FileUploader extends ComponentBase
         $this->placeholderText = $this->property('placeholderText');
     }
 
+    /**
+     * onRun
+     */
     public function onRun()
     {
         $this->addCss(['assets/css/uploader.css']);
@@ -113,7 +121,7 @@ class FileUploader extends ComponentBase
     }
 
     /**
-     * Adds the bespoke attributes used internally by this widget.
+     * decorateFileAttributes adds the bespoke attributes used internally by this widget.
      * - thumbUrl
      * - pathUrl
      * @return System\Models\File
