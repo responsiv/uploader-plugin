@@ -161,7 +161,7 @@
 
     FileUpload.prototype.onUploadSending = function(file, xhr, formData) {
         this.addExtraFormData(formData);
-        xhr.setRequestHeader('X-OCTOBER-REQUEST-HANDLER', this.options.uploadHandler);
+        xhr.setRequestHeader('X-AJAX-HANDLER', this.options.uploadHandler);
     }
 
     FileUpload.prototype.onUploadSuccess = function(file, response) {
