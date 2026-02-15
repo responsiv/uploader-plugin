@@ -27,6 +27,8 @@ return [
         'imageMode_desc' => 'Thumb mode for the preview, eg: exact, portrait, landscape, auto or crop',
         // 'previewFluid' => 'Fluid preview',
         // 'previewFluid_desc' => 'The image should expand to fit the size of its container',
+        'maxFiles' => 'Max number of files',
+        'maxFiles_desc' => 'The maximum number of files allowed to be uploaded.',
         'deferredBinding' => 'Use deferred binding',
         'deferredBinding_desc' => 'If checked the associated model must be saved for the upload to be bound.',
     ],

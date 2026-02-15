@@ -5,6 +5,7 @@
     data-unique-id="{{ __SELF__ }}"
     data-upload-handler="{{ __SELF__ }}::onUpload"
     {% if __SELF__.fileTypes %}data-file-types="{{ __SELF__.fileTypes }}"{% endif %}
+    {% if __SELF__.maxFiles %}data-max-files="{{ __SELF__.maxFiles }}"{% endif %}
 >
 
     <!-- Field placeholder -->

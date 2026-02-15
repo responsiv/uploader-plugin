@@ -71,6 +71,11 @@ class FileUploader extends ComponentBase
                 'default' => '*',
                 'type' => 'string',
             ],
+            'maxFiles' => [
+                'title' => 'responsiv.uploader::lang.prop.maxFiles',
+                'description' => 'responsiv.uploader::lang.prop.maxFiles_desc',
+                'type' => 'string',
+            ],
             'deferredBinding' => [
                 'title' => 'responsiv.uploader::lang.prop.deferredBinding',
                 'description' => 'responsiv.uploader::lang.prop.deferredBinding_desc',
@@ -86,6 +91,7 @@ class FileUploader extends ComponentBase
     {
         $this->fileTypes = $this->processFileTypes(true);
         $this->maxSize = $this->property('maxSize');
+        $this->maxFiles = $this->property('maxFiles');
         $this->placeholderText = $this->property('placeholderText');
     }
 

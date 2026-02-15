@@ -107,6 +107,11 @@ class ImageUploader extends ComponentBase
             //     'default'     => 0,
             //     'type'        => 'checkbox',
             // ],
+            'maxFiles' => [
+                'title'       => 'responsiv.uploader::lang.prop.maxFiles',
+                'description' => 'responsiv.uploader::lang.prop.maxFiles_desc',
+                'type'        => 'string',
+            ],
             'deferredBinding' => [
                 'title'       => 'responsiv.uploader::lang.prop.deferredBinding',
                 'description' => 'responsiv.uploader::lang.prop.deferredBinding_desc',
@@ -119,6 +124,7 @@ class ImageUploader extends ComponentBase
     {
         $this->fileTypes = $this->processFileTypes(true);
         $this->maxSize = $this->property('maxSize');
+        $this->maxFiles = $this->property('maxFiles');
         $this->imageWidth = $this->property('imageWidth');
         $this->imageHeight = $this->property('imageHeight');
         $this->imageMode = $this->property('imageMode');

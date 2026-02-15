@@ -79,7 +79,7 @@
             paramName: this.options.paramName,
             clickable: this.$uploadButton.get(0),
             previewsContainer: this.$filesContainer.get(0),
-            maxFiles: !this.options.isMulti ? 1 : null,
+            maxFiles: !this.options.isMulti ? 1 : (this.options.maxFiles || null),
             headers: {}
         };
 
@@ -291,6 +291,7 @@
         paramName: 'file_data',
         fileTypes: null,
         template: null,
+        maxFiles: null,
         isMulti: null,
         isPreview: null,
         thumbnailWidth: 120,
