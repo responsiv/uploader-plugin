@@ -127,7 +127,11 @@ trait ComponentUtils
 
             // Support model validation rules
             if (!empty($this->model->rules[$this->attribute])) {
-                $validationRules[] = $this->model->rules[$this->attribute];
+                $modelRules = $this->model->rules[$this->attribute];
+                if (is_string($modelRules)) {
+                    $modelRules = explode('|', $modelRules);
+                }
+                $validationRules = array_merge($validationRules, (array) $modelRules);
             }
 
             $validation = Validator::make(
