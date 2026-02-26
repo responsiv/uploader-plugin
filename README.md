@@ -121,13 +121,24 @@ function onInit()
 }
 ```
 
-When rendering the uploader on the page, it is important to use the `{{ form_open() }}` twig helper, this will ensure a session key is generated and passed along with the form. The server will receive this session key as `_session_key`.
+When rendering the uploader on the page, a session key must be included in the form. The simplest approach is to use the `{{ form_open() }}` Twig helper, which automatically generates a session key and includes it with the form. The server will receive this session key as `_session_key`.
 
 ```twig
 {{ form_open() }}
     <!-- File uploader -->
     {% component 'fileUploader' %}
 {{ form_close() }}
+```
+
+If you prefer to use a standard `<form>` tag instead of `form_open()`, you must manually include the session key and CSRF token:
+
+```twig
+<form>
+    {{ form_token() }}
+    {{ form_sessionkey() }}
+    <!-- File uploader -->
+    {% component 'fileUploader' %}
+</form>
 ```
 
 Now when a file is uploaded, the relationship binding will be deferred until the model is saved using the supplied session key. Here is an example of the saving process for the Project model:
