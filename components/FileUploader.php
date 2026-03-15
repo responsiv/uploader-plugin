@@ -38,6 +38,11 @@ class FileUploader extends ComponentBase
     public $maxSize;
 
     /**
+     * @var string|int maxFiles
+     */
+    public $maxFiles;
+
+    /**
      * @var string placeholderText
      */
     public $placeholderText;

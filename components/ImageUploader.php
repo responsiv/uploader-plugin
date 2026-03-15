@@ -10,6 +10,8 @@ class ImageUploader extends ComponentBase
 
     public $maxSize;
 
+    public $maxFiles;
+
     public $imageWidth;
 
     public $imageHeight;
